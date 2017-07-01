@@ -175,16 +175,19 @@ class ProjectsController extends Controller
         if (count($this->projects) == 0) {
             // dd('here');
             $projects = [];
-            $directory = new DirectoryIterator(base_path() .'/app_docs');
-            foreach ($directory as $projectFileInfo) {
-                if ($projectFileInfo->isDir() && !$projectFileInfo->isDot()) {
-                    $projectPath = $projectFileInfo->getFilename();
-                    $projectDir = new DirectoryIterator($projectFileInfo->getPathname());
-                    foreach ($projectDir as $versionFileInfo) {
-                        if ($versionFileInfo->isDir() && !$versionFileInfo->isDot()) {
-                            $versionPath = $versionFileInfo->getFilename();
-                            $path = '/'. $projectPath .'/'. $versionPath;
-                            $projects[$projectPath][] = new phpProject($path);
+            $dirPath = base_path() .'/app_docs';
+            if (file_exists($dirPath)) {
+                $directory = new DirectoryIterator($dirPath);
+                foreach ($directory as $projectFileInfo) {
+                    if ($projectFileInfo->isDir() && !$projectFileInfo->isDot()) {
+                        $projectPath = $projectFileInfo->getFilename();
+                        $projectDir = new DirectoryIterator($projectFileInfo->getPathname());
+                        foreach ($projectDir as $versionFileInfo) {
+                            if ($versionFileInfo->isDir() && !$versionFileInfo->isDot()) {
+                                $versionPath = $versionFileInfo->getFilename();
+                                $path = '/'. $projectPath .'/'. $versionPath;
+                                $projects[$projectPath][] = new phpProject($path);
+                            }
                         }
                     }
                 }
