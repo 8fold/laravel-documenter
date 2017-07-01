@@ -4,7 +4,7 @@ namespace Eightfold\Documenter\Traits;
 
 use \View;
 
-trait DocumentorViewFinder
+trait DocumenterViewFinder
 {
     public function viewForProjectOverview()
     {

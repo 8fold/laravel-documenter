@@ -17,6 +17,10 @@ class DocumenterServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadViewsFrom(__DIR__.'/views', 'documenter');
+
+        $this->publishes([
+            __DIR__.'/config/documenter-laravel.php' => config_path('documenter-laravel.php')
+        ]);
     }
 
     /**

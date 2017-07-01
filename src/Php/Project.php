@@ -80,7 +80,8 @@ class Project
         $this->versionSlug = $slugExploded[2];
         $this->url = '/'. $this->slug .'/'. $this->versionSlug;
 
-        $documentorDocs = base_path() .'/app_docs';
+        $documenterDocs = config('documenter-laravel.projects_root');
+        // $documentorDocs = base_path() .'/app_docs';
         $this->projectVersionsDirectory = $documentorDocs . $slug;
         $iterator = static::getIteratorForPath($this->projectVersionsDirectory . $rootDir, $ignoreDirs);
         $files = [];

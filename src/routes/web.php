@@ -2,7 +2,7 @@
 
 $controller = Eightfold\Documenter\Controllers\ProjectsController::class;
 
-Route::domain('developer.'.env('DOCUMENTER_DOMAIN'))->group(function () use ($controller) {
+Route::domain('developer.'.config('documenter-laravel.documenter_domain'))->group(function () use ($controller) {
     Route::get('/', $controller.'@index');
     Route::get('/{project}', $controller.'@viewProjectOverview');
     Route::get('/{project}/{version}', $controller.'@viewProjectVersion');
