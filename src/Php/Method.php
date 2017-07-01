@@ -1,27 +1,27 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Php;
+namespace Eightfold\Documenter\Php;
 
 use phpDocumentor\Reflection\ClassReflector\MethodReflector;
 
-use Eightfold\DocumentorLaravel\Php\File;
-use Eightfold\DocumentorLaravel\Php\DocBlock;
-use Eightfold\DocumentorLaravel\Php\Class_;
-use Eightfold\DocumentorLaravel\Php\Trait_;
-use Eightfold\DocumentorLaravel\Php\Interface_;
-use Eightfold\DocumentorLaravel\Php\Parameter;
+use Eightfold\Documenter\Php\File;
+use Eightfold\Documenter\Php\DocBlock;
+use Eightfold\Documenter\Php\Class_;
+use Eightfold\Documenter\Php\Trait_;
+use Eightfold\Documenter\Php\Interface_;
+use Eightfold\Documenter\Php\Parameter;
 
-use Eightfold\DocumentorLaravel\Interfaces\HasDeclarations;
+use Eightfold\Documenter\Interfaces\HasDeclarations;
 
-use Eightfold\DocumentorLaravel\Traits\DocBlockable;
-use Eightfold\DocumentorLaravel\Traits\Nameable;
-use Eightfold\DocumentorLaravel\Traits\HasDeclarationsTrait;
-use Eightfold\DocumentorLaravel\Traits\DeclaredByClass;
-use Eightfold\DocumentorLaravel\Traits\CanBeAbstract;
-use Eightfold\DocumentorLaravel\Traits\CanBeFinal;
-use Eightfold\DocumentorLaravel\Traits\CanHaveAccess;
-use Eightfold\DocumentorLaravel\Traits\CanBeStatic;
-use Eightfold\DocumentorLaravel\Traits\Parameterized;
+use Eightfold\Documenter\Traits\DocBlockable;
+use Eightfold\Documenter\Traits\Nameable;
+use Eightfold\Documenter\Traits\HasDeclarationsTrait;
+use Eightfold\Documenter\Traits\DeclaredByClass;
+use Eightfold\Documenter\Traits\CanBeAbstract;
+use Eightfold\Documenter\Traits\CanBeFinal;
+use Eightfold\Documenter\Traits\CanHaveAccess;
+use Eightfold\Documenter\Traits\CanBeStatic;
+use Eightfold\Documenter\Traits\Parameterized;
 
 class Method extends MethodReflector
 {

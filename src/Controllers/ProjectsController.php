@@ -1,6 +1,6 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Controllers;
+namespace Eightfold\Documenter\Controllers;
 
 use App\Http\Controllers\Controller;
 
@@ -11,17 +11,17 @@ use phpDocumentor\Reflection\FileReflector;
 use phpDocumentor\Reflection\Traverser;
 use phpDocumentor\Reflection\DocBlock;
 
-// use Eightfold\DocumentorLaravel\Models\Project;
-use Eightfold\DocumentorLaravel\Php\ObjectClass;
-use Eightfold\DocumentorLaravel\Php\ObjectProperty;
-use Eightfold\DocumentorLaravel\Php\Trait_;
-use Eightfold\DocumentorLaravel\Php\ObjectInterface;
+// use Eightfold\Documenter\Models\Project;
+use Eightfold\Documenter\Php\ObjectClass;
+use Eightfold\Documenter\Php\ObjectProperty;
+use Eightfold\Documenter\Php\Trait_;
+use Eightfold\Documenter\Php\ObjectInterface;
 
-use Eightfold\DocumentorLaravel\Php\ProjectClass;
-use Eightfold\DocumentorLaravel\Php\ProjectTrait;
-use Eightfold\DocumentorLaravel\Php\Method;
+use Eightfold\Documenter\Php\ProjectClass;
+use Eightfold\Documenter\Php\ProjectTrait;
+use Eightfold\Documenter\Php\Method;
 
-use Eightfold\DocumentorLaravel\Php\Project as phpProject;
+use Eightfold\Documenter\Php\Project as phpProject;
 
 use GrahamCampbell\Markdown\Facades\Markdown;
 
@@ -119,11 +119,11 @@ class ProjectsController extends Controller
         $view = $this->viewWithDiscussion($project, $versionSlug, $all);
 
         switch (get_class($object)) {
-            case 'Eightfold\DocumentorLaravel\Php\Interface_':
+            case 'Eightfold\Documenter\Php\Interface_':
                 return $view->with('interface', $object);
                 break;
 
-            case 'Eightfold\DocumentorLaravel\Php\Trait_':
+            case 'Eightfold\Documenter\Php\Trait_':
                 return $view->with('object', $object);
                 break;
 

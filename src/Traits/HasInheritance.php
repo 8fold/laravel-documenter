@@ -1,8 +1,8 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Traits;
+namespace Eightfold\Documenter\Traits;
 
-use Eightfold\DocumentorLaravel\Models\ObjectClass;
+use Eightfold\Documenter\Models\ObjectClass;
 
 trait HasInheritance
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Traits;
+namespace Eightfold\Documenter\Traits;
 
 trait CanBeStatic
 {

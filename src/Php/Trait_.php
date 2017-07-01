@@ -1,17 +1,17 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Php;
+namespace Eightfold\Documenter\Php;
 
 use phpDocumentor\Reflection\TraitReflector;
 
-use Eightfold\DocumentorLaravel\Php\Project;
+use Eightfold\Documenter\Php\Project;
 
-use Eightfold\DocumentorLaravel\Interfaces\HasDeclarations;
+use Eightfold\Documenter\Interfaces\HasDeclarations;
 
-use Eightfold\DocumentorLaravel\Traits\DocBlockable;
-use Eightfold\DocumentorLaravel\Traits\Nameable;
-use Eightfold\DocumentorLaravel\Traits\HasDeclarationsTrait;
-use Eightfold\DocumentorLaravel\Traits\Symbolic;
+use Eightfold\Documenter\Traits\DocBlockable;
+use Eightfold\Documenter\Traits\Nameable;
+use Eightfold\Documenter\Traits\HasDeclarationsTrait;
+use Eightfold\Documenter\Traits\Symbolic;
 
 class Trait_ extends TraitReflector implements HasDeclarations
 {

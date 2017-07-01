@@ -1,6 +1,6 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Interfaces;
+namespace Eightfold\Documenter\Interfaces;
 
 interface HasDeclarations
 {

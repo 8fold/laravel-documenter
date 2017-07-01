@@ -1,8 +1,8 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Traits;
+namespace Eightfold\Documenter\Traits;
 
-use Eightfold\DocumentorLaravel\Php\Property;
+use Eightfold\Documenter\Php\Property;
 
 trait Symbolic
 {
@@ -67,7 +67,7 @@ trait Symbolic
      * Get Property with name
      *
      * @param  string $name The name of the Property to retrieve.
-     * @return Eightfold\DocumentorLaravel\Models\ObjectProperty The property with the
+     * @return Eightfold\Documenter\Models\ObjectProperty The property with the
      *                                                           given name.
      *
      * @category Get and store symbols
@@ -119,7 +119,7 @@ trait Symbolic
      * Get Method with name
      *
      * @param  string $name The name of the method to retrieve.
-     * @return Eightfold\DocumentorLaravel\Models\ObjectMethod The method with the
+     * @return Eightfold\Documenter\Models\ObjectMethod The method with the
      *                                                         given name.
      *
      * @category Get and store symbols

@@ -1,20 +1,20 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Php;
+namespace Eightfold\Documenter\Php;
 
 use phpDocumentor\Reflection\ClassReflector\PropertyReflector;
 
-use Eightfold\DocumentorLaravel\Php\Class_;
+use Eightfold\Documenter\Php\Class_;
 
-use Eightfold\DocumentorLaravel\Interfaces\HasDeclarations;
+use Eightfold\Documenter\Interfaces\HasDeclarations;
 
-use Eightfold\DocumentorLaravel\Traits\DocBlockable;
-use Eightfold\DocumentorLaravel\Traits\Nameable;
-use Eightfold\DocumentorLaravel\Traits\CanBeStatic;
-use Eightfold\DocumentorLaravel\Traits\CanHaveAccess;
-use Eightfold\DocumentorLaravel\Traits\Parameterized;
-use Eightfold\DocumentorLaravel\Traits\DeclaredByClass;
-use Eightfold\DocumentorLaravel\Traits\HasDeclarationsTrait;
+use Eightfold\Documenter\Traits\DocBlockable;
+use Eightfold\Documenter\Traits\Nameable;
+use Eightfold\Documenter\Traits\CanBeStatic;
+use Eightfold\Documenter\Traits\CanHaveAccess;
+use Eightfold\Documenter\Traits\Parameterized;
+use Eightfold\Documenter\Traits\DeclaredByClass;
+use Eightfold\Documenter\Traits\HasDeclarationsTrait;
 
 class Property extends PropertyReflector implements HasDeclarations
 {

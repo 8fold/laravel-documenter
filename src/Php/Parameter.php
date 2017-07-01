@@ -1,14 +1,14 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Php;
+namespace Eightfold\Documenter\Php;
 
 use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
 
-use Eightfold\DocumentorLaravel\Php\Method;
+use Eightfold\Documenter\Php\Method;
 
-use Eightfold\DocumentorLaravel\Traits\Nameable;
-use Eightfold\DocumentorLaravel\Traits\DocBlockable;
-use Eightfold\DocumentorLaravel\Traits\Parameterized;
+use Eightfold\Documenter\Traits\Nameable;
+use Eightfold\Documenter\Traits\DocBlockable;
+use Eightfold\Documenter\Traits\Parameterized;
 
 class Parameter extends ArgumentReflector
 {

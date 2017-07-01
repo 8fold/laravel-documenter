@@ -1,18 +1,18 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Php;
+namespace Eightfold\Documenter\Php;
 
 use \DirectoryIterator;
 use \RecursiveDirectoryIterator;
 use \RecursiveCallbackFilterIterator;
 use \FilesystemIterator;
 
-use Eightfold\DocumentorLaravel\Php\File;
-use Eightfold\DocumentorLaravel\Php\Class_;
-use Eightfold\DocumentorLaravel\Php\Trait_;
-use Eightfold\DocumentorLaravel\Php\Interface_;
+use Eightfold\Documenter\Php\File;
+use Eightfold\Documenter\Php\Class_;
+use Eightfold\Documenter\Php\Trait_;
+use Eightfold\Documenter\Php\Interface_;
 
-use Eightfold\DocumentorLaravel\Traits\DocumentorViewFinder;
+use Eightfold\Documenter\Traits\DocumentorViewFinder;
 
 class Project
 {
@@ -104,7 +104,7 @@ class Project
     public function hasClass($classLongName)
     {
         if (strlen($classLongName) > 0 && $class = $this->objectWithLongName($classLongName)) {
-            return (is_a($class, 'Eightfold\DocumentorLaravel\Php\Class_'));
+            return (is_a($class, 'Eightfold\Documenter\Php\Class_'));
         }
         return false;
     }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Traits;
+namespace Eightfold\Documenter\Traits;
 
-use Eightfold\DocumentorLaravel\Php\Parameter;
+use Eightfold\Documenter\Php\Parameter;
 
 use phpDocumentor\Reflection\DocBlock\Tag\ParamTag;
 use phpDocumentor\Reflection\DocBlock\Tag\PropertyTag;

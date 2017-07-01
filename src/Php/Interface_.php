@@ -1,12 +1,12 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Php;
+namespace Eightfold\Documenter\Php;
 
 use phpDocumentor\Reflection\InterfaceReflector;
 
-use Eightfold\DocumentorLaravel\Php\Project;
+use Eightfold\Documenter\Php\Project;
 
-use Eightfold\DocumentorLaravel\Traits\Nameable;
+use Eightfold\Documenter\Traits\Nameable;
 
 class Interface_ extends InterfaceReflector
 {

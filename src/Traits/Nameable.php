@@ -1,11 +1,11 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Traits;
+namespace Eightfold\Documenter\Traits;
 
-use Eightfold\DocumentorLaravel\Php\Class_;
-use Eightfold\DocumentorLaravel\Php\Trait_;
-use Eightfold\DocumentorLaravel\Php\Interface_;
-use Eightfold\DocumentorLaravel\Php\Parameter;
+use Eightfold\Documenter\Php\Class_;
+use Eightfold\Documenter\Php\Trait_;
+use Eightfold\Documenter\Php\Interface_;
+use Eightfold\Documenter\Php\Parameter;
 
 trait Nameable
 {

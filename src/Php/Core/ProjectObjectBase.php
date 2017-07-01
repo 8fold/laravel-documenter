@@ -1,6 +1,6 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Php\Core;
+namespace Eightfold\Documenter\Php\Core;
 
 
 abstract class ProjectObjectBase

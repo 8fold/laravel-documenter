@@ -1,8 +1,8 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Traits;
+namespace Eightfold\Documenter\Traits;
 
-use Eightfold\DocumentorLaravel\Php\DocBlock;
+use Eightfold\Documenter\Php\DocBlock;
 
 trait Parameterized
 {

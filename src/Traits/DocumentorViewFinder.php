@@ -1,6 +1,6 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Traits;
+namespace Eightfold\Documenter\Traits;
 
 use \View;
 
@@ -19,11 +19,11 @@ trait DocumentorViewFinder
     public function viewForObject($object)
     {
         switch (get_class($object)) {
-            case 'Eightfold\DocumentorLaravel\Php\Interface_':
+            case 'Eightfold\Documenter\Php\Interface_':
                 return $this->viewFinder('version.interface');
                 break;
 
-            case 'Eightfold\DocumentorLaravel\Php\Trait_':
+            case 'Eightfold\Documenter\Php\Trait_':
                 return $this->viewFinder('version.trait');
                 break;
 

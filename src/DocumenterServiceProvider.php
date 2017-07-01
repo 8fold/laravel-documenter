@@ -1,6 +1,6 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel;
+namespace Eightfold\Documenter;
 
 use Illuminate\Support\ServiceProvider;
 

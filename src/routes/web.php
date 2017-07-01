@@ -1,6 +1,6 @@
 <?php
 
-$controller = Eightfold\DocumentorLaravel\Controllers\ProjectsController::class;
+$controller = Eightfold\Documenter\Controllers\ProjectsController::class;
 
 // Route::get('/', function () {
 //     return view('documenter::welcome');

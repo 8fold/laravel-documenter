@@ -1,6 +1,6 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Traits;
+namespace Eightfold\Documenter\Traits;
 
 trait Pathable
 {
@@ -16,8 +16,8 @@ trait Pathable
     /**
      * Return the url based on the passed parameters.
      *
-     * @param  varies $projectOrClass Eightfold\DocumentorLaravel\Models\Project|
-     *                                Eightfold\DocumentorLaravel\Models\Project The
+     * @param  varies $projectOrClass Eightfold\Documenter\Models\Project|
+     *                                Eightfold\Documenter\Models\Project The
      *                                project or class in which the element is
      *                                contained.
      * @param  string $symbolType     Can be "methods" or "properties". Used when
@@ -44,7 +44,7 @@ trait Pathable
     /**
      * Path made from class long name.
      *
-     * Converts Eightfold\DocumentorLaravel\Models\ObjectMethod
+     * Converts Eightfold\Documenter\Models\ObjectMethod
      * into models/object-method
      *
      * @return string The resulting path for the Class.

@@ -1,22 +1,22 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel\Php;
+namespace Eightfold\Documenter\Php;
 
 use phpDocumentor\Reflection\ClassReflector;
 
-use Eightfold\DocumentorLaravel\Php\Project;
-use Eightfold\DocumentorLaravel\Php\Property;
-use Eightfold\DocumentorLaravel\Php\Method;
-use Eightfold\DocumentorLaravel\Php\DocBlock;
+use Eightfold\Documenter\Php\Project;
+use Eightfold\Documenter\Php\Property;
+use Eightfold\Documenter\Php\Method;
+use Eightfold\Documenter\Php\DocBlock;
 
-use Eightfold\DocumentorLaravel\Interfaces\HasDeclarations;
+use Eightfold\Documenter\Interfaces\HasDeclarations;
 
-use Eightfold\DocumentorLaravel\Traits\HasInheritance;
-use Eightfold\DocumentorLaravel\Traits\Nameable;
-use Eightfold\DocumentorLaravel\Traits\DocBlockable;
-use Eightfold\DocumentorLaravel\Traits\Symbolic;
-use Eightfold\DocumentorLaravel\Traits\CanBeAbstract;
-use Eightfold\DocumentorLaravel\Traits\CanBeFinal;
+use Eightfold\Documenter\Traits\HasInheritance;
+use Eightfold\Documenter\Traits\Nameable;
+use Eightfold\Documenter\Traits\DocBlockable;
+use Eightfold\Documenter\Traits\Symbolic;
+use Eightfold\Documenter\Traits\CanBeAbstract;
+use Eightfold\Documenter\Traits\CanBeFinal;
 
 /**
  * Class_ represents a `class` in the project.
