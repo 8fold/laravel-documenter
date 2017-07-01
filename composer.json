@@ -1,0 +1,32 @@
+{
+    "name": "8fold/documenter-laravel",
+    "description": "A Laravel service for dynamically generating API documentation of PHP projects.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Josh Bruce",
+            "email": "josh@joshuabruce.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.4",
+        "phpdocumentor/reflection": "3.0.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.7"
+    },
+    "autoload": {
+        "classmap": [
+            "database"
+        ],
+        "psr-4": {
+            "phpDocumentor\\Reflection\\": "vendor/phpdocumentor/reflection/src/phpDocumentor/Reflection",
+            "Eightfold\\DocumenterLaravel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    }
+}
