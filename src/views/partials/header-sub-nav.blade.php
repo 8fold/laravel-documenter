@@ -22,7 +22,7 @@ This means there is no reason to have the "class list" link, because I can get t
                 @foreach($nav_projects as $nav_projects_version)
                     @if($loop->first)
                     <li><a href="{{ url($nav_projects_version->url()) }}">
-                        @include('documenter::'. $nav_projects_version->slug() .'.partials.title')
+                        {{ $nav_projects_version->title() }}
                     </a></li>
                     @endif
                 @endforeach
@@ -30,7 +30,7 @@ This means there is no reason to have the "class list" link, because I can get t
         </ul>
         @endif
         @if (isset($project_slug))
-            <a href="{{ url($project->url()) }}">@include('documenter::'. $project_slug .'.partials.title')</a>
+            <a href="{{ url($project->url()) }}">{{ Eightfold\Documenter\Php\Project::titleFromSlug($project_slug) }}</a>
 
         @else
             Select a project&hellip;

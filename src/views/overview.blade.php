@@ -7,7 +7,7 @@
             @foreach ($projects as $versions)
                 @foreach($versions as $project)
                     {{ dump($project) }}
-                    <p><a href="{{ url($project->url()) }}">@include($project->viewForTitle())</a></p>
+                    <p><a href="{{ url($project->url()) }}">{{ $project->title() }}</a></p>
 
                 @endforeach
             @endforeach

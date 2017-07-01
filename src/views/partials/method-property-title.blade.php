@@ -21,5 +21,5 @@ Instance {{ $objectType }}
 @if ($object->isDeprecated())
 <p class="font-lead"><strong>Deprecated:</strong> {{ $object->deprecatedDescription() }}</p>
 @else
-{!! Markdown::convertToHtml($object->getText()) !!}
+{!! DocumenterMarkdown::convertToHtml($object->getText()) !!}
 @endif

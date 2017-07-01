@@ -38,6 +38,24 @@ class Project
 
     private $interfaces = [];
 
+    /**
+     * The title to display for the project.
+     *
+     * @return String The title for the project established in the configuration.
+     *
+     * @category Display
+     *
+     */
+    static public function titleFromSlug($slug)
+    {
+        $allTitles = config('documenter-laravel.project_titles');
+        if (array_key_exists($slug, $allTitles)) {
+            return $allTitles[$slug];
+
+        }
+        return 'Project name unknown';
+    }
+
     static private function getIteratorForPath($path, $ignore)
     {
         $directory = new RecursiveDirectoryIterator(
@@ -76,13 +94,14 @@ class Project
             dd('Invalid files path presented.');
 
         }
+
         $this->slug = $slugExploded[1];
         $this->versionSlug = $slugExploded[2];
         $this->url = '/'. $this->slug .'/'. $this->versionSlug;
 
         $documenterDocs = config('documenter-laravel.projects_root');
-        // $documentorDocs = base_path() .'/app_docs';
-        $this->projectVersionsDirectory = $documentorDocs . $slug;
+
+        $this->projectVersionsDirectory = $documenterDocs . $slug;
         $iterator = static::getIteratorForPath($this->projectVersionsDirectory . $rootDir, $ignoreDirs);
         $files = [];
         foreach ($iterator as $info) {
@@ -92,6 +111,27 @@ class Project
         }
         $this->files = $files;
     }
+
+    /**
+     * @return String Calls static method titleFromSlug()
+     */
+    public function title()
+    {
+        return Project::titleFromSlug($this->slug);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function hasLongName($longName)
     {
@@ -112,7 +152,6 @@ class Project
 
     public function url()
     {
-        // return '/documentation'. $this->url;
         return $this->url;
     }
 

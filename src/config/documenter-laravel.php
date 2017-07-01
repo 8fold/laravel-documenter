@@ -28,5 +28,12 @@ return [
      *         /v0-0-1
      *
      */
-    'projects_root' => base_path() .'/app_docs'
+    'projects_root' => base_path() .'/app_docs',
+
+    /**
+     * A dictionary where the key is the directory name within projects_root and
+     * the value is the title to display for the project.
+     *
+     */
+    'project_titles' => []
 ];

@@ -106,7 +106,7 @@ class Class_ extends ClassReflector implements HasDeclarations
         if (count($this->interfaces) == 0) {
             $return = [];
             foreach ($reflectorInterfaces as $interfaceLongName) {
-                $return[] = $this->project->interfaceWithLongName($interfaceLongName);
+                $return[] = $this->project->objectWithLongName($interfaceLongName);
             }
             $this->interfaces = $return;
         }
@@ -200,9 +200,11 @@ class Class_ extends ClassReflector implements HasDeclarations
 
             $traitsArray = [];
             foreach ($this->traits() as $trait) {
-                $traitsArray[] = ($highlight)
-                    ? $this->getHighlightedString($trait->name(), 'related')
-                    : $trait->name();
+                if (!is_null($trait)) {
+                    $traitsArray[] = ($highlight)
+                        ? $this->getHighlightedString($trait->name(), 'related')
+                        : $trait->name();
+                }
             }
 
             $build[] = ($highlight)

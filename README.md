@@ -4,5 +4,22 @@
 
 Documenter dynamically generates a documentation site for PHP projects. Documenter is built on top of [phpDocumentor](https://www.phpdoc.org), one of the most well known and used documentation generators for PHP projects.
 
+## Setup
+
+Add this to `aliases` in your `/config/app.php` file:
+
+```
+'DocumenterMarkdown' => GrahamCampbell\Markdown\Facades\Markdown::class
+```
+
 ## Config
 
+```
+php artisan vendor:publish --provider="Eightfold\Documenter\DocumenterServiceProvider"
+```
+
+
+
+## Override views
+
+Laravel allows you to override the views provided by the package by following instructions found in the [Laravel documentation](https://laravel.com/docs/5.4/packages#views).
