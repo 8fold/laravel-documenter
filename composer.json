@@ -17,9 +17,6 @@
         "phpunit/phpunit": "~5.7"
     },
     "autoload": {
-        "classmap": [
-            "database"
-        ],
         "psr-4": {
             "phpDocumentor\\Reflection\\": "vendor/phpdocumentor/reflection/src/phpDocumentor/Reflection",
             "Eightfold\\DocumenterLaravel\\": "src/"
