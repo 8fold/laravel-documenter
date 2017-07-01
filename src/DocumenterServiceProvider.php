@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 /**
  * Laravel Service Provider
  */
-class DocumentorServiceProvider extends ServiceProvider
+class DocumenterServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.

@@ -12,11 +12,11 @@ use Eightfold\Documenter\Php\Class_;
 use Eightfold\Documenter\Php\Trait_;
 use Eightfold\Documenter\Php\Interface_;
 
-use Eightfold\Documenter\Traits\DocumentorViewFinder;
+use Eightfold\Documenter\Traits\DocumenterViewFinder;
 
 class Project
 {
-    use DocumentorViewFinder;
+    use DocumenterViewFinder;
 
     private $url = '';
 
