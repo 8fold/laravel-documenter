@@ -154,7 +154,7 @@ trait DocBlockable
                         $typesChecked[] = trim($class->name($withLink));
 
                     } else {
-                        $namespace = $this->context->getNamespace();
+                        $namespace = $this->reflector->context->getNamespace();
                         $typesChecked[] = str_replace([$namespace, '\\'], ['', ''], $type);
 
                     }

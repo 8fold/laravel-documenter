@@ -36,7 +36,6 @@ class Trait_ extends TraitReflector implements HasDeclarations
         $this->project = $project;
         $this->reflector = $reflector;
         $this->node = $this->reflector->getNode();
-        // $this->context = $this->reflector->context;
     }
 
     public function methods()

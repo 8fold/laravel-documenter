@@ -49,8 +49,6 @@ class Class_ extends ClassReflector implements HasDeclarations
         $this->project = $project;
         $this->reflector = $reflector;
         $this->node = $this->reflector->getNode();
-        // $this->context = $this->reflector->context;
-        // $this->docBlock = new DocBlock($this, $this->node, $this->reflector->context, null);
     }
 
 

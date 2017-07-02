@@ -8,12 +8,12 @@ use Eightfold\Documenter\Php\Class_;
 
 use Eightfold\Documenter\Interfaces\HasDeclarations;
 
-use Eightfold\Documenter\Traits\DocBlockable;
-use Eightfold\Documenter\Traits\Nameable;
-use Eightfold\Documenter\Traits\CanBeStatic;
-use Eightfold\Documenter\Traits\CanHaveAccess;
-use Eightfold\Documenter\Traits\Parameterized;
-use Eightfold\Documenter\Traits\DeclaredByClass;
+use Eightfold\Documenter\Traits\TraitGroupDocNameParam;
+use Eightfold\Documenter\Traits\TraitGroupDeclaredStaticAccess;
+
+// use Eightfold\Documenter\Traits\CanBeStatic;
+// use Eightfold\Documenter\Traits\CanHaveAccess;
+// use Eightfold\Documenter\Traits\DeclaredByClass;
 use Eightfold\Documenter\Traits\HighlightableString;
 
 /**
@@ -21,12 +21,8 @@ use Eightfold\Documenter\Traits\HighlightableString;
  */
 class Property extends PropertyReflector implements HasDeclarations
 {
-    use DocBlockable,
-        Nameable,
-        CanBeStatic,
-        CanHaveAccess,
-        Parameterized,
-        DeclaredByClass,
+    use TraitGroupDocNameParam,
+        TraitGroupDeclaredStaticAccess,
         HighlightableString;
 
     public $project = null;
@@ -43,7 +39,6 @@ class Property extends PropertyReflector implements HasDeclarations
         $this->project = $class->project;
         $this->reflector = $reflector;
         $this->node = $this->reflector->getNode();
-        // $this->context = $this->reflector->context;
     }
 
     public function url()

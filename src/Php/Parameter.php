@@ -6,18 +6,14 @@ use phpDocumentor\Reflection\FunctionReflector\ArgumentReflector;
 
 use Eightfold\Documenter\Php\Method;
 
-use Eightfold\Documenter\Traits\Nameable;
-use Eightfold\Documenter\Traits\DocBlockable;
-use Eightfold\Documenter\Traits\Parameterized;
+use Eightfold\Documenter\Traits\TraitGroupDocNameParam;
 
 /**
  * @category Symbols
  */
 class Parameter extends ArgumentReflector
 {
-    use Nameable,
-        DocBlockable,
-        Parameterized;
+    use TraitGroupDocNameParam;
 
     public $project = null;
 
@@ -28,8 +24,6 @@ class Parameter extends ArgumentReflector
         $this->method = $method;
         $this->project = $this->method->class->project;
         $this->reflector = $reflector;
-        // $this->node = $this->reflector->getNode();
-        // $this->context = $this->reflector->context;
     }
 
     /**

@@ -13,28 +13,25 @@ use Eightfold\Documenter\Php\Parameter;
 
 use Eightfold\Documenter\Interfaces\HasDeclarations;
 
-use Eightfold\Documenter\Traits\DocBlockable;
-use Eightfold\Documenter\Traits\Nameable;
-use Eightfold\Documenter\Traits\DeclaredByClass;
+use Eightfold\Documenter\Traits\TraitGroupDocNameParam;
+use Eightfold\Documenter\Traits\TraitGroupDeclaredStaticAccess;
+
+// use Eightfold\Documenter\Traits\DeclaredByClass;
 use Eightfold\Documenter\Traits\CanBeAbstract;
 use Eightfold\Documenter\Traits\CanBeFinal;
-use Eightfold\Documenter\Traits\CanHaveAccess;
-use Eightfold\Documenter\Traits\CanBeStatic;
-use Eightfold\Documenter\Traits\Parameterized;
+// use Eightfold\Documenter\Traits\CanHaveAccess;
+// use Eightfold\Documenter\Traits\CanBeStatic;
+
 
 /**
  * @category Symbols
  */
 class Method extends MethodReflector
 {
-    use DocBlockable,
-        Nameable,
-        DeclaredByClass,
+    use TraitGroupDocNameParam,
+        TraitGroupDeclaredStaticAccess,
         CanBeAbstract,
-        CanBeFinal,
-        CanBeStatic,
-        CanHaveAccess,
-        Parameterized;
+        CanBeFinal;
 
     public $project = null;
 
@@ -56,8 +53,6 @@ class Method extends MethodReflector
         $this->project = $this->class->project;
         $this->reflector = $reflector;
         $this->node = $this->reflector->getNode();
-        // $this->context = $this->reflector->context;
-        // $this->docBlock = new DocBlock($this, $this->node, $this->reflector->context, null);
     }
 
     public function url()

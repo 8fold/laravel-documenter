@@ -23,6 +23,6 @@ trait Nameable
 
     public function longName()
     {
-        return implode('\\', $this->node->namespacedName->parts);
+        return implode('\\', $this->reflector->getNode()->namespacedName->parts);
     }
 }

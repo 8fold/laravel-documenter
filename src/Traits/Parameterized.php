@@ -70,7 +70,7 @@ trait Parameterized
 
         }
 
-        $return;
+        $return = null;
         foreach ($types as $type) {
             if ($project->hasClass($type)) {
                 $class = $project->objectWithLongName($type);

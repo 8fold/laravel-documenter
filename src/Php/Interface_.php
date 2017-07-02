@@ -25,8 +25,6 @@ class Interface_ extends InterfaceReflector
     {
         $this->project = $project;
         $this->reflector = $reflector;
-        // $this->node = $this->reflector->getNode();
-        // $this->context = $this->reflector->context;
     }
 
     public function methods()
