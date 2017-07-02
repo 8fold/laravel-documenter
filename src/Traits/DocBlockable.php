@@ -60,14 +60,6 @@ trait DocBlockable
         return '';
     }
 
-    // public function longDescription()
-    // {
-    //     if (!is_null($this->docBlock()) && strlen($this->docBlock()->getLongDescription()) > 0) {
-    //         return $this->docBlock()->getLongDescription();
-    //     }
-    //     return $this->shortDescription();
-    // }
-
     public function docBlock()
     {
         if (is_null($this->docBlock)) {
@@ -99,9 +91,6 @@ trait DocBlockable
                     $tag = $tag;
                     break;
                 }
-
-            // } elseif (get_class($tag) == ReturnTag::class) {
-            //     $tag = $this->returnTagString($withLink);
 
             } else {
                 $tag = $tag;

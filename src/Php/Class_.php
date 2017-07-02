@@ -17,6 +17,7 @@ use Eightfold\Documenter\Traits\DocBlockable;
 use Eightfold\Documenter\Traits\Symbolic;
 use Eightfold\Documenter\Traits\CanBeAbstract;
 use Eightfold\Documenter\Traits\CanBeFinal;
+use Eightfold\Documenter\Traits\CanHaveTraits;
 
 /**
  * Represents a `class` in a project.
@@ -30,7 +31,8 @@ class Class_ extends ClassReflector implements HasDeclarations
         Symbolic,
         DocBlockable,
         CanBeAbstract,
-        CanBeFinal;
+        CanBeFinal,
+        CanHaveTraits;
 
     public $project = null;
 
@@ -119,29 +121,6 @@ class Class_ extends ClassReflector implements HasDeclarations
             $this->interfaces = $return;
         }
         return $this->interfaces;
-    }
-
-    /**
-     * [traits description]
-     * @return [type] [description]
-     *
-     * @category Modifiers
-     */
-    public function traits()
-    {
-        $reflectorTraits = $this->reflector->getTraits();
-        if (count($reflectorTraits) == 0) {
-            return [];
-        }
-
-        if (count($this->traits) == 0) {
-            $return = [];
-            foreach ($reflectorTraits as $longName) {
-                $return[] = $this->project->objectWithLongName($longName);
-            }
-            $this->traits = $return;
-        }
-        return $this->traits;
     }
 
     /**

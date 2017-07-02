@@ -70,6 +70,7 @@ class ProjectsController extends Controller
         $project = new phpProject($projectSlug);
         if ($project->viewExists('overview')) {
             return $this->baseViewWith($project, $project->viewForProjectOverview());
+
         }
         $versions = $project->versions();
         return redirect(url($projectSlug .'/'. $versions[0]));
@@ -236,11 +237,11 @@ class ProjectsController extends Controller
     {
         $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
         $classes = $project->classesOrdered();
-        $traits = $project->traits();
+        $traits = $project->traitsOrdered();
         $interfaces = $project->interfaces();
         return $this->viewWithVersion($project, $project->viewForHome(), $versionSlug)
             ->with('classesOrdered', $classes)
-            ->with('traits', $traits)
+            ->with('traitsOrdered', $traits)
             ->with('interfaces', $interfaces);
     }
 
@@ -265,7 +266,7 @@ class ProjectsController extends Controller
             ->with('object', $object)
             ->with('symbols', $object->symbolsOrdered());
 
-        if (get_class($object) == 'Eightfold\Documenter\Php\Class_') {
+        if (get_class($object) == 'Eightfold\Documenter\Php\Class_' || get_class($object) == 'Eightfold\Documenter\Php\Trait_') {
             $view->with('traits', $object->traits());
         }
         return $view;

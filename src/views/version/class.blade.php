@@ -86,20 +86,20 @@
 @if(!is_null($object->parent()) || count($traits) > 0)
 <h2>Relationships</h2>
     @if(!is_null($object->parent()))
-    <h3>Inherits from</h3>
-    @if($object->parent()->isInProjectSpace())
-        <dl>
-            <dt>{!! $object->parent()->smallDeclaration() !!}</dt>
-            <dd>{!! $object->parent()->shortDescription() !!}</dd>
-        </dl>
-    @else
-        <dl>
-            <dt>{{ $object->parent()->space() }}\{{ $object->parent()->name() }}</dt>
-            <dd>Note: The parent class is not owned by this project.</dd>
-        </dl>
+        <h3>Inherits from</h3>
+        @if($object->parent()->isInProjectSpace())
+            <dl>
+                <dt>{!! $object->parent()->smallDeclaration() !!}</dt>
+                <dd>{!! $object->parent()->shortDescription() !!}</dd>
+            </dl>
+        @else
+            <dl>
+                <dt>{{ $object->parent()->space() }}\{{ $object->parent()->name() }}</dt>
+                <dd>Note: The parent class is not owned by this project.</dd>
+            </dl>
+        @endif
     @endif
-    </p>
-    @endif
+
     @if(count($traits) > 0)
         <h3>Has traits</h3>
         <dl>

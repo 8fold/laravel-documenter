@@ -74,4 +74,17 @@
         'static_private'
     ]
 ])
+
+@if(count($traits) > 0)
+<h2>Relationships</h2>
+    @if(count($traits) > 0)
+        <h3>Has traits</h3>
+        <dl>
+        @foreach($traits as $trait)
+            <dt>{!! $trait->mediumDeclaration() !!}</dt>
+            <dd>{!! $trait->shortDescription() !!}</dd>
+        @endforeach
+        </dl>
+    @endif
+@endif
 @endsection

@@ -11,6 +11,8 @@ use Eightfold\Documenter\Php\File;
 use Eightfold\Documenter\Php\Class_;
 use Eightfold\Documenter\Php\Trait_;
 use Eightfold\Documenter\Php\Interface_;
+use Eightfold\Documenter\Php\Method;
+use Eightfold\Documenter\Php\Property;
 
 use Eightfold\Documenter\Traits\DocumenterViewFinder;
 
@@ -35,6 +37,8 @@ class Project
     private $classesOrdered = [];
 
     private $traits = [];
+
+    private $traitsOrdered = [];
 
     private $interfaces = [];
 
@@ -287,6 +291,53 @@ class Project
 
             if ($abstract == 0) {
                 $this->{$propertyName} = [];
+
+            } else {
+                foreach ($build as $category => $types) {
+                    foreach ($types as $type => $symbols) {
+                        ksort($symbols);
+                        $build[$category][$type] = $symbols;
+                    }
+                }
+                $this->{$propertyName} = $build;
+            }
+        }
+        return $this->{$propertyName};
+    }
+
+    /**
+     * @category Retrieve objects
+     *
+     * @return [type] [description]
+     */
+    public function traitsOrdered()
+    {
+        $propertyName = 'traitsOrdered';
+        if (count($this->{$propertyName}) == 0) {
+            $symbols = $this->traits();
+            $abstract = 0;
+            $build = [];
+            foreach ($symbols as $key => $symbol) {
+                $category = (strlen($symbol->category()) > 0)
+                    ? $symbol->category()
+                    : 'NO_CATEGORY';
+                $type = 'NO_TYPE';
+                if (get_class($symbol) == Class_::class || get_class($symbol)  == Method_::class) {
+                    if ($symbol->isAbstract()) {
+                        $type = 'abstract';
+                        $abstract++;
+
+                    } else {
+                        $type = 'concrete';
+
+                    }
+                }
+                $build[$category][$type][$symbol->name()] = $symbol;
+
+            }
+
+            if ($abstract == 0) {
+                $this->{$propertyName} = $build;
 
             } else {
                 foreach ($build as $category => $types) {

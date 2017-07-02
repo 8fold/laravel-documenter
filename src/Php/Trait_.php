@@ -12,6 +12,7 @@ use Eightfold\Documenter\Traits\DocBlockable;
 use Eightfold\Documenter\Traits\Nameable;
 use Eightfold\Documenter\Traits\Symbolic;
 use Eightfold\Documenter\Traits\HighlightableString;
+use Eightfold\Documenter\Traits\CanHaveTraits;
 
 /**
  * Represents a `trait` within a project.
@@ -23,7 +24,8 @@ class Trait_ extends TraitReflector implements HasDeclarations
     use DocBlockable,
         Nameable,
         Symbolic,
-        HighlightableString;
+        HighlightableString,
+        CanHaveTraits;
 
     public $project = null;
 

@@ -15,12 +15,6 @@ namespace Eightfold\Documenter\Php;
 class ClassExternal
 {
     /**
-     * [$testing description]
-     * @var string
-     */
-    static public $testing = 'string';
-
-    /**
      * Copy of `$namespaceParts` for caching.
      *
      * @var array

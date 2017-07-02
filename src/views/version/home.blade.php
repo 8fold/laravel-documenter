@@ -23,4 +23,27 @@
         'typeOrder'    => ['concrete', 'abstract']
     ])
 @endif
+
+@if(count($traitsOrdered) > 0)
+    <h2>Traits</h2>
+    <p>All Traits are within the <code>{{ $project_namespace }}</code> namespace.</p>
+    @include('documenter::partials.class-list', [
+        'classes'      => $traitsOrdered,
+        'only_process' => ['Main'],
+        'typeOrder'    => ['concrete', 'abstract', 'NO_TYPE']
+    ])
+
+    @include('documenter::partials.class-list', [
+        'classes'   => $traitsOrdered,
+        'skip'      => ['NO_CATEGORY', 'Main'],
+        'typeOrder' => ['concrete', 'abstract', 'NO_TYPE']
+    ])
+
+    @include('documenter::partials.class-list', [
+        'classes'      => $traitsOrdered,
+        'only_process' => ['NO_CATEGORY'],
+        'typeOrder'    => ['concrete', 'abstract', 'NO_TYPE']
+    ])
+@endif
+
 @endsection
