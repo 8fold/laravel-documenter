@@ -6,19 +6,17 @@ Documenter dynamically generates a documentation site for PHP projects. Document
 
 ## Setup
 
-Add this to `aliases` in your `/config/app.php` file:
+Add this to `providers` in your `/config/app.php` file:
 
 ```
-'DocumenterMarkdown' => GrahamCampbell\Markdown\Facades\Markdown::class
+GrahamCampbell\Markdown\MarkdownServiceProvider::class
 ```
 
-## Config
+## Grouping things together
 
-```
-php artisan vendor:publish --provider="Eightfold\Documenter\DocumenterServiceProvider"
-```
+You can group classes, traits, interfaces, methods, and properties when they are returned from a project. The way you do this is by adding a `@category` tag to the DocBlock of the desired object. 
 
-
+*Note: This is* not *the category tag described in the [phpDocumentor documentation](https://www.phpdoc.org/docs/latest/references/phpdoc/tags/category.html); instead, it is just the semantically appropriate name for what we are trying to accomplish. Therefore, to define hierarchical relationships, follow the instructions in the documentation.* 
 
 ## Override views
 

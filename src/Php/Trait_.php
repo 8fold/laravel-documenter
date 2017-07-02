@@ -10,14 +10,17 @@ use Eightfold\Documenter\Interfaces\HasDeclarations;
 
 use Eightfold\Documenter\Traits\DocBlockable;
 use Eightfold\Documenter\Traits\Nameable;
-use Eightfold\Documenter\Traits\HasDeclarationsTrait;
 use Eightfold\Documenter\Traits\Symbolic;
 
+/**
+ * Represents a `trait` within a project.
+ *
+ * @category Project object
+ */
 class Trait_ extends TraitReflector implements HasDeclarations
 {
     use DocBlockable,
         Nameable,
-        HasDeclarationsTrait,
         Symbolic;
 
     public $project = null;

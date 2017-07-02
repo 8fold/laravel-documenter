@@ -2,7 +2,7 @@
 
 namespace Eightfold\Documenter\Traits;
 
-use Eightfold\Documenter\Models\ObjectClass;
+use Eightfold\Documenter\Php\ClassExternal;
 
 trait HasInheritance
 {
@@ -12,9 +12,14 @@ trait HasInheritance
         if (is_null($this->node->extends)) {
             return null;
         }
+
         $parentNamespaceParts = $this->node->extends->parts;
         $parentNamespace = implode('\\', $parentNamespaceParts);
         $parentClass = $this->project->objectWithLongName($parentNamespace);
+        if (is_null($parentClass)) {
+            return new ClassExternal($parentNamespaceParts);
+
+        }
         return $parentClass;
     }
 

@@ -14,8 +14,10 @@ use Eightfold\Documenter\Traits\CanBeStatic;
 use Eightfold\Documenter\Traits\CanHaveAccess;
 use Eightfold\Documenter\Traits\Parameterized;
 use Eightfold\Documenter\Traits\DeclaredByClass;
-use Eightfold\Documenter\Traits\HasDeclarationsTrait;
 
+/**
+ * @category Symbols
+ */
 class Property extends PropertyReflector implements HasDeclarations
 {
     use DocBlockable,
@@ -23,8 +25,7 @@ class Property extends PropertyReflector implements HasDeclarations
         CanBeStatic,
         CanHaveAccess,
         Parameterized,
-        DeclaredByClass,
-        HasDeclarationsTrait;
+        DeclaredByClass;
 
     public $project = null;
 
@@ -53,6 +54,69 @@ class Property extends PropertyReflector implements HasDeclarations
     }
 
     /**
+     * [processDeclaration description]
+     * @param  [type]  $highlight          [description]
+     * @param  [type]  $withLink           [description]
+     * @param  boolean $processInheritance [description]
+     * @param  boolean $processInterfaces  [description]
+     * @param  boolean $processTraits      [description]
+     * @return [type]                      [description]
+     *
+     * @category Declarations
+     */
+    private function processDeclaration($highlight, $withLink)
+    {
+        if ($withLink) {
+            $build[] = '<a class="call-signature" href="'. url($this->url()) .'">';
+        }
+
+        $build[] = $this->processOpening($highlight);
+
+        $build[] = ($withLink)
+            ? '</a>'
+            : '';
+
+        return implode(' ', $build);
+    }
+
+    /**
+     * [processOpening description]
+     * @param  [type] $highlight [description]
+     * @return [type]            [description]
+     *
+     * @category Declarations
+     */
+    private function processOpening($highlight)
+    {
+        $build = [];
+
+        if ($this->isStatic()) {
+            $build[] = $this->getHighlightedString('static');
+        }
+
+        $build[] = $this->getHighlightedString($this->access(), 'access');
+
+        $build[] = $this->name();
+
+        return implode(' ', $build);
+    }
+
+    /**
+     * [getHighlightedString description]
+     * @param  [type] $label     [description]
+     * @param  [type] $elemClass [description]
+     * @return [type]            [description]
+     *
+     * @category Declarations
+     */
+    private function getHighlightedString($label, $elemClass = null)
+    {
+        return (is_null($elemClass))
+            ? '<span class="'. $label .'">'. $label .'</span>'
+            : '<span class="'. $elemClass .'">'. $label .'</span>';
+    }
+
+    /**
      * By default will be highlighted, have link, show interfaces, show traits, and
      * whether class is abstract or concrete.
      *
@@ -62,17 +126,7 @@ class Property extends PropertyReflector implements HasDeclarations
      */
     public function largeDeclaration($highlight = true, $withLink = true)
     {
-        return $this->buildDeclaration([
-            'objectType'          => 'property',
-            'highlight'           => $highlight,
-            'withLink'            => $withLink,
-            'showStaticKeyword'   => true,
-            'showDefault'         => true,
-            'showAccessKeyword'   => true,
-            'showTypeHint'        => true,
-            'showReturnType'      => true,
-            'showAbstractKeyword' => true
-        ]);
+        return $this->processDeclaration($highlight, $withLink);
     }
 
     /**
@@ -82,17 +136,7 @@ class Property extends PropertyReflector implements HasDeclarations
      */
     public function mediumDeclaration($highlight = true, $withLink = true)
     {
-        return $this->buildDeclaration([
-            'objectType'          => 'property',
-            'highlight'           => $highlight,
-            'withLink'            => $withLink,
-            'showStaticKeyword'   => true,
-            'showDefault'         => false,
-            'showAccessKeyword'   => true,
-            'showTypeHint'        => true,
-            'showReturnType'      => true,
-            'showAbstractKeyword' => true
-        ]);
+        return $this->processDeclaration($highlight, $withLink);
     }
 
     /**
@@ -102,17 +146,7 @@ class Property extends PropertyReflector implements HasDeclarations
      */
     public function smallDeclaration($highlight = true, $withLink = true)
     {
-        return $this->buildDeclaration([
-            'objectType'          => 'property',
-            'highlight'           => $highlight,
-            'withLink'            => $withLink,
-            'showStaticKeyword'   => true,
-            'showDefault'         => false,
-            'showAccessKeyword'   => true,
-            'showTypeHint'        => false,
-            'showReturnType'      => true,
-            'showAbstractKeyword' => true
-        ]);
+        return $this->processDeclaration($highlight, $withLink);
     }
 
     /**
@@ -122,17 +156,7 @@ class Property extends PropertyReflector implements HasDeclarations
      */
     public function miniDeclaration($highlight = true, $withLink = true)
     {
-        return $this->buildDeclaration([
-            'objectType'          => 'property',
-            'highlight'           => $highlight,
-            'withLink'            => $withLink,
-            'showStaticKeyword'   => true,
-            'showDefault'         => false,
-            'showAccessKeyword'   => true,
-            'showTypeHint'        => false,
-            'showReturnType'      => false,
-            'showAbstractKeyword' => true,
-        ]);
+        return $this->processDeclaration($highlight, $withLink);
     }
 
     /**
@@ -142,19 +166,27 @@ class Property extends PropertyReflector implements HasDeclarations
      */
     public function microDeclaration($highlight = true, $withLink = true, $showKeywords = true)
     {
-        $base = $this->buildDeclaration([
-            'objectType'          => 'property',
-            'highlight'           => $highlight,
-            'withLink'            => $withLink,
-            'showStaticKeyword'   => true,
-            'showDefault'         => false,
-            'showAccessKeyword'   => true,
-            'showTypeHint'        => false,
-            'showReturnType'      => false,
-            'showAbstractKeyword' => true
-        ]);
-        $replace = ['>abstract<', 'static', 'final', 'private', 'protected', 'public', 'function'];
-        $with = ['>abs<', 'stat', 'fin', 'priv', 'prot', 'pub', 'func'];
+        $base = $this->processDeclaration($highlight, $withLink);
+        $replace = [
+            '>abstract<',
+            'static',
+            'final',
+            'private',
+            'protected',
+            'public',
+            'function'
+        ];
+
+        $with = [
+            '>abs<',
+            'stat',
+            'fin',
+            'priv',
+            'prot',
+            'pub',
+            'func'
+        ];
+
         return str_replace($replace, $with, $base);
     }
 }

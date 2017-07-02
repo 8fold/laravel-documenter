@@ -19,7 +19,9 @@ use Eightfold\Documenter\Traits\CanBeAbstract;
 use Eightfold\Documenter\Traits\CanBeFinal;
 
 /**
- * Class_ represents a `class` in the project.
+ * Represents a `class` in a project.
+ *
+ * @category Project object
  */
 class Class_ extends ClassReflector implements HasDeclarations
 {
@@ -51,6 +53,24 @@ class Class_ extends ClassReflector implements HasDeclarations
         $this->docBlock = new DocBlock($this, $this->node, $this->reflector->context, null);
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function url()
     {
         if (strlen($this->url) == 0) {
@@ -78,24 +98,14 @@ class Class_ extends ClassReflector implements HasDeclarations
         return $this->project->hasLongName($this->namespaceName());
     }
 
-    // TODO: Convert to trait along with properties
-    public function methods()
-    {
-        $objects = $this->reflector->getMethods();
-        if (count($objects) == 0) {
-            return [];
-        }
 
-        if (count($this->methods) == 0) {
-            $return = [];
-            foreach ($objects as $object) {
-                $return[] = new Method($this, $object);
-            }
-            $this->methods = $return;
-        }
-        return $this->methods;
-    }
 
+    /**
+     * [interfaces description]
+     * @return [type] [description]
+     *
+     * @category Modifiers
+     */
     public function interfaces()
     {
         $reflectorInterfaces = $this->reflector->getInterfaces();
@@ -113,6 +123,12 @@ class Class_ extends ClassReflector implements HasDeclarations
         return $this->interfaces;
     }
 
+    /**
+     * [traits description]
+     * @return [type] [description]
+     *
+     * @category Modifiers
+     */
     public function traits()
     {
         $reflectorTraits = $this->reflector->getTraits();
@@ -130,17 +146,17 @@ class Class_ extends ClassReflector implements HasDeclarations
         return $this->traits;
     }
 
-    // TODO: Convert to trait along with methods
-    public function properties()
-    {
-        $properties = $this->reflector->getProperties();
-        $props = [];
-        foreach ($properties as $propertyReflector) {
-            $props[] = new Property($this, $propertyReflector);
-        }
-        return $props;
-    }
-
+    /**
+     * [processDeclaration description]
+     * @param  [type]  $highlight          [description]
+     * @param  [type]  $withLink           [description]
+     * @param  boolean $processInheritance [description]
+     * @param  boolean $processInterfaces  [description]
+     * @param  boolean $processTraits      [description]
+     * @return [type]                      [description]
+     *
+     * @category Declarations
+     */
     private function processDeclaration($highlight, $withLink, $processInheritance = true, $processInterfaces = true, $processTraits = true)
     {
         if ($withLink) {
@@ -171,6 +187,13 @@ class Class_ extends ClassReflector implements HasDeclarations
         return implode(' ', $build);
     }
 
+    /**
+     * [processOpening description]
+     * @param  [type] $highlight [description]
+     * @return [type]            [description]
+     *
+     * @category Declarations
+     */
     private function processOpening($highlight)
     {
         $build = [];
@@ -185,6 +208,13 @@ class Class_ extends ClassReflector implements HasDeclarations
         return implode(' ', $build);
     }
 
+    /**
+     * [processTraits description]
+     * @param  [type] $highlight [description]
+     * @return [type]            [description]
+     *
+     * @category Declarations
+     */
     private function processTraits($highlight)
     {
         if (count($this->traits()) == 0) {
@@ -215,6 +245,14 @@ class Class_ extends ClassReflector implements HasDeclarations
         return implode(' ', $build);
     }
 
+
+    /**
+     * [processInterfaces description]
+     * @param  [type] $highlight [description]
+     * @return [type]            [description]
+     *
+     * @category Declarations
+     */
     private function processInterfaces($highlight)
     {
         if (count($this->interfaces()) == 0) {
@@ -237,6 +275,13 @@ class Class_ extends ClassReflector implements HasDeclarations
         return implode(' ', $build);
     }
 
+    /**
+     * [processInheritance description]
+     * @param  [type] $highlight [description]
+     * @return [type]            [description]
+     *
+     * @category Declarations
+     */
     private function processInheritance($highlight)
     {
         if (is_null($this->parent())) {
@@ -247,13 +292,30 @@ class Class_ extends ClassReflector implements HasDeclarations
             ? $this->getHighlightedString('extends')
             : 'extends';
 
-        $build[] = ($highlight)
-            ? $this->getHighlightedString($this->parent()->name(), 'related')
-            : $this->parent()->name();
+        if (is_a($this->parent(), Class_::class)) {
+            $build[] = ($highlight)
+                ? $this->getHighlightedString($this->parent()->name(), 'related')
+                : $this->parent()->name();
+
+        } else {
+            $build[] = ($highlight)
+                ? '['. $this->getHighlightedString($this->parent()->name(), 'related') .']'
+                : '['. $this->parent()->name() .']';
+
+        }
+
 
         return implode(' ', $build);
     }
 
+    /**
+     * [getHighlightedString description]
+     * @param  [type] $label     [description]
+     * @param  [type] $elemClass [description]
+     * @return [type]            [description]
+     *
+     * @category Declarations
+     */
     private function getHighlightedString($label, $elemClass = null)
     {
         return (is_null($elemClass))
@@ -268,6 +330,8 @@ class Class_ extends ClassReflector implements HasDeclarations
      * @param  boolean $withLink  [description]
      *
      * @return [type]             [description]
+     *
+     * @category Declarations
      */
     public function largeDeclaration($highlight = true, $withLink = true)
     {
@@ -285,6 +349,8 @@ class Class_ extends ClassReflector implements HasDeclarations
      * @param  boolean $withLink  Default is true. Whether to create an anchor tag.
      *
      * @return [type] [description]
+     *
+     * @category Declarations
      */
     public function mediumDeclaration($highlight = true, $withLink = true)
     {
@@ -298,6 +364,8 @@ class Class_ extends ClassReflector implements HasDeclarations
      * Method name, parameters, type hints, defaults, and function keyword.
      *
      * @return [type] [description]
+     *
+     * @category Declarations
      */
     public function smallDeclaration($highlight = true, $withLink = true)
     {
@@ -310,6 +378,8 @@ class Class_ extends ClassReflector implements HasDeclarations
      * Method name, parameters.
      *
      * @return [type] [description]
+     *
+     * @category Declarations
      */
     public function miniDeclaration($highlight = true, $withLink = true)
     {
@@ -320,14 +390,44 @@ class Class_ extends ClassReflector implements HasDeclarations
      * Method name.
      *
      * @return [type] [description]
+     *
+     * @category Declarations
      */
     public function microDeclaration($highlight = true, $withLink = true, $showKeywords = true)
     {
         $base = $this->miniDeclaration($highlight, $withLink);
-        $replace = ['>abstract<', 'static', 'final', 'private', 'protected', 'public', 'function', 'class'];
-        $with = ['><', '', '', '', '', '', '', ''];
+        $replace = [
+            '>abstract<',
+            'static',
+            'final',
+            'private',
+            'protected',
+            'public',
+            'function',
+            'class'
+        ];
+
+        $with = [
+            '><',
+            '',
+            '',
+            '',
+            '',
+            '',
+            '',
+            ''
+        ];
         if ($showKeywords) {
-            $with = ['>abs<', 'stat', 'fin', 'priv', 'prot', 'pub', 'func', 'class'];
+            $with = [
+                '>abs<',
+                'stat',
+                'fin',
+                'priv',
+                'prot',
+                'pub',
+                'func',
+                'class'
+            ];
 
         }
 

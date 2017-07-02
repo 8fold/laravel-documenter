@@ -10,11 +10,11 @@
     @endif
 </h2>
     <dl>
-    @foreach ($access_order as $access)
-        @foreach($symbol_order as $symbol_type)
-            @if(isset($symbols[$category][$access][$symbol_type]))
+    @foreach($symbol_order as $symbol_type)
+        @foreach ($access_order as $access)
+            @if(isset($symbols[$category][$symbol_type][$access]))
                 @include('documenter::partials.term-and-definitions', [
-                    'dictionary' => $symbols[$category][$access][$symbol_type],
+                    'dictionary' => $symbols[$category][$symbol_type][$access],
                     'hasKey' => false
                 ])
             @endif

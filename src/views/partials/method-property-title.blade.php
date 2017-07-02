@@ -19,7 +19,7 @@ Instance {{ $objectType }}
 </h1>
 
 @if ($object->isDeprecated())
-<p class="font-lead"><strong>Deprecated:</strong> {{ $object->deprecatedDescription() }}</p>
+<p class="font-lead"><strong>Deprecated:</strong> {!! \GrahamCampbell\Markdown\Facades\Markdown::convertToHtml($object->deprecatedDescription()) !!}</p>
 @else
-{!! DocumenterMarkdown::convertToHtml($object->getText()) !!}
+{!! \GrahamCampbell\Markdown\Facades\Markdown::convertToHtml($object->shortDescription()) !!}
 @endif

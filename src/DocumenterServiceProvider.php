@@ -19,7 +19,8 @@ class DocumenterServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/views', 'documenter');
 
         $this->publishes([
-            __DIR__.'/config/documenter-laravel.php' => config_path('documenter-laravel.php')
+            __DIR__.'/config/documenter-laravel.php' => config_path('documenter-laravel.php'),
+            __DIR__.'/resources/assets/sass/_documenter.scss' => resource_path('assets/sass/vendor/8fold/documenter/_documenter.scss')
         ]);
     }
 

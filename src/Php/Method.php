@@ -15,7 +15,6 @@ use Eightfold\Documenter\Interfaces\HasDeclarations;
 
 use Eightfold\Documenter\Traits\DocBlockable;
 use Eightfold\Documenter\Traits\Nameable;
-use Eightfold\Documenter\Traits\HasDeclarationsTrait;
 use Eightfold\Documenter\Traits\DeclaredByClass;
 use Eightfold\Documenter\Traits\CanBeAbstract;
 use Eightfold\Documenter\Traits\CanBeFinal;
@@ -23,11 +22,13 @@ use Eightfold\Documenter\Traits\CanHaveAccess;
 use Eightfold\Documenter\Traits\CanBeStatic;
 use Eightfold\Documenter\Traits\Parameterized;
 
+/**
+ * @category Symbols
+ */
 class Method extends MethodReflector
 {
     use DocBlockable,
         Nameable,
-        HasDeclarationsTrait,
         DeclaredByClass,
         CanBeAbstract,
         CanBeFinal,
@@ -114,7 +115,7 @@ class Method extends MethodReflector
         return $this->returnDescription;
     }
 
-    private function processDeclaration($highlight, $withLink)
+    private function processDeclaration($highlight, $withLink, $includeParams = true, $includeReturnType = true)
     {
         if ($withLink) {
             $build[] = '<a class="call-signature" href="'. url($this->url()) .'">';
@@ -122,9 +123,18 @@ class Method extends MethodReflector
 
         $build[] = $this->processOpening($highlight);
 
-        $build[] = ($this->hasReturn())
-            ? $this->name() .'('. $this->processParameters($highlight) .'): '. $this->getHighlightedString($this->returnTypes($withLink), 'typehint')
-            : $this->name() .'('. $this->processParameters($highlight) .')';
+        if ($includeParams) {
+            $build[] = ($includeReturnType && $this->hasReturn())
+                ? $this->name() .'('. $this->processParameters($highlight) .'): '. $this->getHighlightedString($this->returnTypes($withLink), 'typehint')
+                : $this->name() .'('. $this->processParameters($highlight) .')';
+
+            } else {
+                $build[] = ($includeReturnType && $this->hasReturn())
+                    ? $this->name() .'(): '. $this->getHighlightedString($this->returnTypes($withLink), 'typehint')
+                    : $this->name() .'()';
+
+            }
+
 
         $build[] = ($withLink)
             ? '</a>'
@@ -180,8 +190,7 @@ class Method extends MethodReflector
      *
      * @param  boolean $highlight Default is true. Whether to display the highlights.
      * @param  boolean $withLink  Default is true. Whether to create an anchor tag.
-     *
-     * @return string             string|html Based on configuration.
+     * @return [type]             [description]
      */
     public function largeDeclaration($highlight = true, $withLink = true)
     {
@@ -191,95 +200,61 @@ class Method extends MethodReflector
     /**
      * Method name, parameters, type hints, defaults, function keyword, return type, and access level.
      *
-     * @return string             string|html Based on configuration.
+     * @return [type] [description]
      */
     public function mediumDeclaration($highlight = true, $withLink = true)
     {
-        return $this->buildDeclaration([
-            'objectType'          => 'function',
-            'highlight'           => $highlight,
-            'withLink'            => $withLink,
-            'showFunctionKeyword' => true,
-            'showStaticKeyword'   => true,
-            'showParameters'      => true,
-            'showTypeHint'        => false,
-            'showDefault'         => false,
-            'showAccessKeyword'   => true,
-            'showReturnType'      => true,
-            'showFinalKeyword'    => true,
-            'showAbstractKeyword' => true
-        ]);
+        return $this->processDeclaration($highlight, $withLink);
     }
 
     /**
      * Method name, parameters, type hints, defaults, and function keyword.
      *
-     * @return string             string|html Based on configuration.
+     * @return [type] [description]
      */
     public function smallDeclaration($highlight = true, $withLink = true)
     {
-        return $this->buildDeclaration([
-            'objectType'          => 'function',
-            'highlight'           => $highlight,
-            'withLink'            => $withLink,
-            'showFunctionKeyword' => true,
-            'showStaticKeyword'   => true,
-            'showParameters'      => false,
-            'showTypeHint'        => false,
-            'showDefault'         => false,
-            'showAccessKeyword'   => true,
-            'showReturnType'      => true,
-            'showFinalKeyword'    => true,
-            'showAbstractKeyword' => true
-        ]);
+        return $this->processDeclaration($highlight, $withLink);
     }
 
     /**
      * Method name, parameters.
      *
-     * @return string             string|html Based on configuration.
+     * @return [type] [description]
      */
     public function miniDeclaration($highlight = true, $withLink = true)
     {
-        return $this->buildDeclaration([
-            'objectType'          => 'function',
-            'highlight'           => $highlight,
-            'withLink'            => $withLink,
-            'showFunctionKeyword' => true,
-            'showStaticKeyword'   => true,
-            'showParameters'      => false,
-            'showTypeHint'        => false,
-            'showDefault'         => false,
-            'showAccessKeyword'   => true,
-            'showReturnType'      => false,
-            'showFinalKeyword'    => true,
-            'showAbstractKeyword' => true
-        ]);
+        return $this->processDeclaration($highlight, $withLink);
     }
 
     /**
      * Method name.
      *
-     * @return string             string|html Based on configuration.
+     * @return [type] [description]
      */
     public function microDeclaration($highlight = true, $withLink = true, $showKeywords = true)
     {
-        $base = $this->buildDeclaration([
-            'objectType'          => 'function',
-            'highlight'           => $highlight,
-            'withLink'            => $withLink,
-            'showFunctionKeyword' => true,
-            'showStaticKeyword'   => true,
-            'showParameters'      => false,
-            'showTypeHint'        => false,
-            'showDefault'         => false,
-            'showAccessKeyword'   => true,
-            'showReturnType'      => false,
-            'showFinalKeyword'    => true,
-            'showAbstractKeyword' => true
-        ]);
-        $replace = ['>abstract<', 'static', 'final', 'private', 'protected', 'public', 'function'];
-        $with = ['>abs<', 'stat', 'fin', 'priv', 'prot', 'pub', 'func'];
+        $base = $this->processDeclaration($highlight, $withLink, false, false);
+        $replace = [
+            '>abstract<',
+            'static',
+            'final',
+            'private',
+            'protected',
+            'public',
+            'function'
+        ];
+
+        $with = [
+            '>abs<',
+            'stat',
+            'fin',
+            'priv',
+            'prot',
+            'pub',
+            'func'
+        ];
+
         return str_replace($replace, $with, $base);
     }
 }

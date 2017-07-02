@@ -22,28 +22,10 @@ trait DocBlockable
      * @deprecated
      * @return [type] [description]
      */
-    public function description()
+    public function discussion()
     {
-        return $this->shortDescription();
-    }
-
-    public function category()
-    {
-        if (!is_null($this->docBlock()) && $this->docBlock()->hasTag('category')) {
-            $category = $this->docBlock()->getTagsByName('category');
-            // always use the first one.
-            $category = $category[0];
-
-            // always use the short description for categories.
-            return $category->getDocBlock()->getShortDescription();
-        }
-        return null;
-    }
-
-    public function getText()
-    {
-        if (!is_null($this->docBlock)) {
-            return $this->docBlock->getText();
+        if (!is_null($this->docBlock())) {
+            return $this->docBlock()->getLongDescription();
         }
         return '';
     }
@@ -52,6 +34,28 @@ trait DocBlockable
     {
         if (!is_null($this->docBlock())) {
             return $this->docBlock()->getShortDescription();
+        }
+        return '';
+    }
+
+    public function category()
+    {
+        if (!is_null($this->docBlock()) && $this->docBlock()->hasTag('category')) {
+            $category = $this->docBlock()->getTagsByName('category');
+
+            // always use the first one.
+            $category = $category[0];
+
+            // always use the short description for categories.
+            return $category->getDescription();
+        }
+        return null;
+    }
+
+    public function getText()
+    {
+        if (!is_null($this->docBlock)) {
+            return $this->docBlock->getText();
         }
         return '';
     }

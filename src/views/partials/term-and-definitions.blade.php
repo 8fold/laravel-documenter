@@ -8,10 +8,10 @@
             @endif
         </code></dt>
         @if(strlen($object->deprecatedDescription()) > 0)
-            <dd>{{ $object->deprecatedDescription() }}</dd>
+            <dd>{!! \GrahamCampbell\Markdown\Facades\Markdown::convertToHtml($object->deprecatedDescription()) !!}</dd>
 
         @else
-            <dd>{{ $object->shortDescription() }}</dd>
+            <dd>{!! \GrahamCampbell\Markdown\Facades\Markdown::convertToHtml($object->shortDescription()) !!}</dd>
 
         @endif
     @endforeach
@@ -26,10 +26,10 @@
             @endif
         </code></dt>
         @if(strlen($object->deprecatedDescription()) > 0)
-            <dd>{{ $object->deprecatedDescription() }}</dd>
+            <dd>{!! \GrahamCampbell\Markdown\Facades\Markdown::convertToHtml($object->deprecatedDescription()) !!}</dd>
 
         @else
-            <dd>{{ $object->shortDescription() }}</dd>
+            <dd>{!! \GrahamCampbell\Markdown\Facades\Markdown::convertToHtml($object->shortDescription()) !!}</dd>
 
         @endif
     @endforeach

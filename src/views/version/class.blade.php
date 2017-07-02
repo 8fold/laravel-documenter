@@ -4,6 +4,14 @@
     'object' => $object,
     'objectType' => 'class'
 ])
+
+@if(strlen($object->discussion()) > 0)
+<section class="ef-content">
+    <h2>Discussion</h2>
+    {!! \GrahamCampbell\Markdown\Facades\Markdown::convertToHtml($object->discussion()) !!}
+</section>
+@endif
+
 @include('documenter::partials.symbol-list', [
     'symbols' => $symbols,
     'symbol_order' => [
@@ -14,8 +22,8 @@
     'label' => 'Initializer',
     'access_order' => [
         'public',
-        'private',
         'protected',
+        'private',
         'static_public',
         'static_protected',
         'static_private'
@@ -31,8 +39,8 @@
     ],
     'access_order' => [
         'public',
-        'private',
         'protected',
+        'private',
         'static_public',
         'static_protected',
         'static_private'
@@ -49,8 +57,8 @@
     ],
     'access_order' => [
         'public',
-        'private',
         'protected',
+        'private',
         'static_public',
         'static_protected',
         'static_private'
@@ -67,20 +75,14 @@
     ],
     'access_order' => [
         'public',
-        'private',
         'protected',
+        'private',
         'static_public',
         'static_protected',
         'static_private'
     ]
 ])
 
-@if(strlen($discussion) > 0)
-<section class="ef-content">
-    <h2>Discussion</h2>
-    {!! $discussion !!}
-</section>
-@endif
 @if(!is_null($object->parent()) || count($traits) > 0)
 <h2>Relationships</h2>
     @if(!is_null($object->parent()))

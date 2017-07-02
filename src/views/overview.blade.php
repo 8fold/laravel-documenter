@@ -6,7 +6,6 @@
         <div class="ef-width-two-thirds ef-end-row">
             @foreach ($projects as $versions)
                 @foreach($versions as $project)
-                    {{ dump($project) }}
                     <p><a href="{{ url($project->url()) }}">{{ $project->title() }}</a></p>
 
                 @endforeach

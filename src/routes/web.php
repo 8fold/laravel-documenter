@@ -8,6 +8,6 @@ Route::domain('developer.'.config('documenter-laravel.documenter_domain'))->grou
     Route::get('/{project}/{version}', $controller.'@viewProjectVersion');
     Route::get('/{project}/{version}/{something}/methods/{method}', $controller.'@viewMethod')->where('something', '.*');
     Route::get('/{project}/{version}/{something}/properties/{method}', $controller.'@viewProperty')->where('something', '.*');
-    Route::get('/{project}/{version}/{something}', $controller.'@viewSomething')
+    Route::get('/{project}/{version}/{something}', $controller.'@viewObject')
         ->where('something', '.*');
 });

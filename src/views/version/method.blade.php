@@ -25,7 +25,7 @@
             @endif
         @endif
         </dt>
-        <dd>{!! Markdown::convertToHtml($parameter->getText()) !!}</dd>
+        <dd>{!! \GrahamCampbell\Markdown\Facades\Markdown::convertToHtml($parameter->getText()) !!}</dd>
     @endforeach
     </dl>
 </section>
@@ -36,8 +36,15 @@
     <h2>Return value</h2>
     <dl>
         <dt>@if($method->hasReturn()){!! $method->returnTypes(true) !!}@endif</dt>
-        <dd>@if($method->hasReturn()){!! Markdown::convertToHtml($method->returnDescription()) !!}@endif</dd>
+        <dd>@if($method->hasReturn()){!! \GrahamCampbell\Markdown\Facades\Markdown::convertToHtml($method->returnDescription()) !!}@endif</dd>
     </dl>
+</section>
+@endif
+
+@if(strlen($method->discussion()) > 0)
+<section class="ef-content">
+    <h2>Discussion</h2>
+    {!! \GrahamCampbell\Markdown\Facades\Markdown::convertToHtml($method->discussion()) !!}
 </section>
 @endif
 

@@ -3,18 +3,10 @@
 namespace Eightfold\Documenter\Traits;
 
 use Eightfold\Documenter\Php\Property;
+use Eightfold\Documenter\Php\Method;
 
 trait Symbolic
 {
-    /**
-     * Storage for symbolsOrdered()
-     *
-     * @var array
-     *
-     * @category Get and store symbols
-     */
-    private $symbolsOrdered = [];
-
     /**
      * Storage for properties()
      *
@@ -22,7 +14,7 @@ trait Symbolic
      *
      * @category Get and store symbols
      */
-    // private $properties = [];
+    private $_properties = [];
 
     /**
      * Storage for propoertiesOrdered()
@@ -40,7 +32,7 @@ trait Symbolic
      *
      * @category Get and store symbols
      */
-    // private $methods = [];
+    private $_methods = [];
 
     /**
      * Storage for methodsOrdered()
@@ -105,14 +97,26 @@ trait Symbolic
      */
     private function properties()
     {
-        if (count($this->properties) == 0 && count($this->reflector->getProperties()) > 0) {
+        if (count($this->_properties) == 0 && count($this->reflector->getProperties()) > 0) {
             $return = [];
             foreach($this->reflector->getProperties() as $property) {
                 $return[] = new Property($this, $property);
             }
-            $this->properties = $return;
+            $this->_properties = $return;
         }
-        return $this->properties;
+        return $this->_properties;
+    }
+
+    public function methods()
+    {
+        if (count($this->_methods) == 0 && count($this->reflector->getMethods()) > 0) {
+            $return = [];
+            foreach ($this->reflector->getMethods() as $method) {
+                $return[] = new Method($this, $method);
+            }
+            $this->_methods = $return;
+        }
+        return $this->_methods;
     }
 
     /**
@@ -182,6 +186,7 @@ trait Symbolic
     /******************/
     /* Ordered things */
     /******************/
+
     /**
      * Allows for the processing of multiple types of symbols
      *
@@ -235,7 +240,7 @@ trait Symbolic
                     $public++;
 
                 }
-                $build[$category][$accessAndType][$symbolType][$symbol->name()] = $symbol;
+                $build[$category][$symbolType][$accessAndType][$symbol->name()] = $symbol;
             }
 
             if ($public == 0 && $protected == 0 && $private == 0 && $staticPublic == 0 && $staticProtected == 0 && $staticPrivate == 0) {

@@ -34,16 +34,37 @@ use GrahamCampbell\Markdown\Facades\Markdown;
  */
 class ProjectsController extends Controller
 {
+    /**
+     * Cache of all projects found inside the projects root directory.
+     *
+     * @var array
+     */
     private $projects = [];
 
+    /**
+     * @deprecated Might be able to deprecate this.
+     *
+     * @var array
+     */
     private $versions = [];
 
+    /**
+     * Prepare to view a list of all projects.
+     *
+     * @return [type] [description]
+     */
     public function index()
     {
         return view('documenter::overview')
             ->with('projects', $this->projects());
     }
 
+    /**
+     * Prepare to view a specific project.
+     *
+     * @param  [type] $projectSlug [description]
+     * @return [type]              [description]
+     */
     public function viewProjectOverview($projectSlug)
     {
         $project = new phpProject($projectSlug);
@@ -54,6 +75,128 @@ class ProjectsController extends Controller
         return redirect(url($projectSlug .'/'. $versions[0]));
     }
 
+    /**
+     * Prepare to view a class, trait, or interface within the project.
+     *
+     * @param  [type] $projectSlug [description]
+     * @param  [type] $versionSlug [description]
+     * @param  [type] $all         [description]
+     * @return [type]              [description]
+     */
+    public function viewObject($projectSlug, $versionSlug, $all)
+    {
+        $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
+        return $this->viewWithSymbols($project, $versionSlug, $all);
+    }
+
+    /**
+     * Prepare to view a method within a class, trait, or interface.
+     *
+     * @param  [type] $projectSlug [description]
+     * @param  [type] $versionSlug [description]
+     * @param  [type] $all         [description]
+     * @param  [type] $method_name [description]
+     * @return [type]              [description]
+     */
+    public function viewMethod($projectSlug, $versionSlug, $all, $method_name)
+    {
+        $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
+        $class = $project->objectWithPath($all);
+        $method = $class->methodWithSlug($method_name);
+
+        $view = $this->viewWithSymbols($project, $versionSlug, $all, $project->viewForMethod($method));
+
+        // TODO: Remove need for "class"
+        return $view
+            ->with('class', $class)
+            ->with('method', $method);
+    }
+
+    /**
+     * Prepare to view a property wtihin a class or trait.
+     *
+     * @param  [type] $projectSlug  [description]
+     * @param  [type] $versionSlug  [description]
+     * @param  [type] $all          [description]
+     * @param  [type] $propertyName [description]
+     * @return [type]               [description]
+     */
+    public function viewProperty($projectSlug, $versionSlug, $all, $propertyName)
+    {
+        $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
+        $class = $project->objectWithPath($all);
+        $property = $class->propertyWithSlug($propertyName);
+
+        $view = $this->viewWithSymbols($project, $versionSlug, $all, $project->viewForProperty($property));
+
+        // TODO: Remove need for class
+        return $view
+            ->with('class', $class)
+            ->with('property', $property);
+    }
+
+    /**
+     * Get projects and versions from the config projects root.
+     *
+     * @return [type] [description]
+     *
+     * @category Utilities
+     */
+    private function projects()
+    {
+        if (count($this->projects) > 0) {
+            return $this->projects;
+        }
+        $projects = [];
+        $dirPath = config('documenter-laravel.projects_root');
+        if (file_exists($dirPath)) {
+            $directory = new DirectoryIterator($dirPath);
+            foreach ($directory as $projectFileInfo) {
+                if ($projectFileInfo->isDir() && !$projectFileInfo->isDot()) {
+                    $projectPath = $projectFileInfo->getFilename();
+                    $projectDir = new DirectoryIterator($projectFileInfo->getPathname());
+                    foreach ($projectDir as $versionFileInfo) {
+                        if ($versionFileInfo->isDir() && !$versionFileInfo->isDot()) {
+                            $versionPath = $versionFileInfo->getFilename();
+                            $path = '/'. $projectPath .'/'. $versionPath;
+                            $projects[$projectPath][] = new phpProject($path);
+                        }
+                    }
+                }
+            }
+        }
+        $this->projects = $projects;
+
+        return $this->projects;
+    }
+
+    /**
+     * Get versions for a specified project.
+     *
+     * @param  [type] $projectSlug [description]
+     * @return [type]              [description]
+     *
+     * @category Utilities
+     */
+    private function versions($projectSlug)
+    {
+        $projects = $this->projects();
+        if (count($this->versions) == 0 && isset($projects[$projectSlug])) {
+            return $projects[$projectSlug];
+
+        }
+        return [];
+    }
+
+    /**
+     * Prepare universal view with required paramaters for navigation and whatnot.
+     *
+     * @param  [type] $project  [description]
+     * @param  [type] $viewName [description]
+     * @return [type]           [description]
+     *
+     * @category Utilities
+     */
     private function baseViewWith($project, $viewName)
     {
         return view($viewName)
@@ -64,6 +207,16 @@ class ProjectsController extends Controller
             ->with('title_view', $project->viewForTitle());
     }
 
+    /**
+     * Prepare for a specific project version. (duplicate??)
+     *
+     * @param  [type] $project     [description]
+     * @param  [type] $viewName    [description]
+     * @param  [type] $versionSlug [description]
+     * @return [type]              [description]
+     *
+     * @category Utilities
+     */
     private function viewWithVersion($project, $viewName, $versionSlug)
     {
         $base = $this->baseViewWith($project, $viewName);
@@ -72,18 +225,8 @@ class ProjectsController extends Controller
             ->with('project_versions', $this->versions($project->slug()));
     }
 
-    private function viewWithDiscussion($project, $versionSlug, $all)
-    {
-        $object = $project->objectWithPath($all);
-        $discussion = $this->getDiscussion($object);
-
-        return $this->viewWithVersion($project, $project->viewForObject($object), $versionSlug)
-            ->with('symbols', $object->symbolsOrdered())
-            ->with('discussion', $discussion);
-    }
-
     /**
-     * @todo Handle single namespace not returning an array from ApiGen.
+     * Prepare view for a specific project version.
      *
      * @param  [type] $project_slug [description]
      * @param  [type] $version_slug [description]
@@ -102,121 +245,31 @@ class ProjectsController extends Controller
     }
 
     /**
-     * TODO: Change name to viewProjetObject()
+     * Prepare to view a specific class, trait, or interface.
      *
-     * @param  [type] $projectSlug [description]
+     * @param  [type] $project     [description]
      * @param  [type] $versionSlug [description]
      * @param  [type] $all         [description]
+     * @param  [type] $laravelView [description]
      * @return [type]              [description]
      */
-    public function viewSomething($projectSlug, $versionSlug, $all)
+    private function viewWithSymbols($project, $versionSlug, $all, $laravelView = null)
     {
-        $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
-
-        // TODO: change method name to objectWithPath
         $object = $project->objectWithPath($all);
-
-        $view = $this->viewWithDiscussion($project, $versionSlug, $all);
-
-        switch (get_class($object)) {
-            case 'Eightfold\Documenter\Php\Interface_':
-                return $view->with('interface', $object);
-                break;
-
-            case 'Eightfold\Documenter\Php\Trait_':
-                return $view->with('object', $object);
-                break;
-
-            default:
-                return $view
-                    ->with('object', $object)
-                    ->with('traits', $object->traits());
-                break;
+        $view = $project->viewForObject($object);
+        if (!is_null($laravelView)) {
+            $view = $laravelView;
         }
-    }
 
-    public function viewMethod($projectSlug, $versionSlug, $all, $method_name)
-    {
-        $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
+        $view = $this->viewWithVersion($project, $view, $versionSlug)
+            ->with('object', $object)
+            ->with('symbols', $object->symbolsOrdered());
 
-
-
-
-        $class = $project->objectWithPath($all);
-        $method = $class->methodWithSlug($method_name);
-        return view($project->viewForMethod($method))
-            ->with('project_slug', $projectSlug)
-            ->with('version', str_replace('-', '.', $versionSlug))
-            ->with('project', $project)
-            ->with('projects', $this->projects())
-            ->with('project_versions', $this->versions($projectSlug))
-            ->with('class', $class)
-            ->with('method', $method);
-    }
-
-    public function viewProperty($projectSlug, $versionSlug, $all, $propertyName)
-    {
-        $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
-        $class = $project->classWithPath($all);
-        $property = $class->propertyWithSlug($propertyName);
-        return view($project->viewForProperty($property))
-            ->with('project_slug', $projectSlug)
-            ->with('version', str_replace('-', '.', $versionSlug))
-            ->with('project', $project)
-            ->with('projects', $this->projects())
-            ->with('project_versions', $this->versions($projectSlug))
-            ->with('class', $class)
-            ->with('property', $property);
-    }
-
-    private function projects()
-    {
-        // dd('here');
-        if (count($this->projects) == 0) {
-            // dd('here');
-            $projects = [];
-            $dirPath = base_path() .'/app_docs';
-            if (file_exists($dirPath)) {
-                $directory = new DirectoryIterator($dirPath);
-                foreach ($directory as $projectFileInfo) {
-                    if ($projectFileInfo->isDir() && !$projectFileInfo->isDot()) {
-                        $projectPath = $projectFileInfo->getFilename();
-                        $projectDir = new DirectoryIterator($projectFileInfo->getPathname());
-                        foreach ($projectDir as $versionFileInfo) {
-                            if ($versionFileInfo->isDir() && !$versionFileInfo->isDot()) {
-                                $versionPath = $versionFileInfo->getFilename();
-                                $path = '/'. $projectPath .'/'. $versionPath;
-                                $projects[$projectPath][] = new phpProject($path);
-                            }
-                        }
-                    }
-                }
-            }
-            $this->projects = $projects;
+        if (get_class($object) == 'Eightfold\Documenter\Php\Class_') {
+            $view->with('traits', $object->traits());
         }
-        return $this->projects;
+        return $view;
     }
 
-    private function versions($projectSlug)
-    {
-        $projects = $this->projects();
-        if (count($this->versions) == 0 && isset($projects[$projectSlug])) {
-            return $projects[$projectSlug];
 
-        }
-        return [];
-    }
-
-    // TODO: DO NOT deprecate
-    private function getDiscussion($object)
-    {
-        $file = str_replace('\\', '-', strtolower($object->namespaceName()));
-        // dd($object->project);
-        $path = resource_path() .'/views/'. $object->project->slug() .'/discussions/'. $file .'.md';
-        if (file_exists($path)) {
-            $contents = file_get_contents($path);
-            return Markdown::convertToHtml($contents);
-        }
-        return '';
-    }
 }
