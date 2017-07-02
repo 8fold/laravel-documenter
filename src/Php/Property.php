@@ -14,6 +14,7 @@ use Eightfold\Documenter\Traits\CanBeStatic;
 use Eightfold\Documenter\Traits\CanHaveAccess;
 use Eightfold\Documenter\Traits\Parameterized;
 use Eightfold\Documenter\Traits\DeclaredByClass;
+use Eightfold\Documenter\Traits\HighlightableString;
 
 /**
  * @category Symbols
@@ -25,7 +26,8 @@ class Property extends PropertyReflector implements HasDeclarations
         CanBeStatic,
         CanHaveAccess,
         Parameterized,
-        DeclaredByClass;
+        DeclaredByClass,
+        HighlightableString;
 
     public $project = null;
 
@@ -99,21 +101,6 @@ class Property extends PropertyReflector implements HasDeclarations
         $build[] = $this->name();
 
         return implode(' ', $build);
-    }
-
-    /**
-     * [getHighlightedString description]
-     * @param  [type] $label     [description]
-     * @param  [type] $elemClass [description]
-     * @return [type]            [description]
-     *
-     * @category Declarations
-     */
-    private function getHighlightedString($label, $elemClass = null)
-    {
-        return (is_null($elemClass))
-            ? '<span class="'. $label .'">'. $label .'</span>'
-            : '<span class="'. $elemClass .'">'. $label .'</span>';
     }
 
     /**

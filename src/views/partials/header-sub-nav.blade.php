@@ -73,19 +73,26 @@ This means there is no reason to have the "class list" link, because I can get t
         @endif
     </nav>
     @endif
+
     @if (isset($class))
     <nav class="function-navigator">
         <span class="nav-label">
         @if (method_exists($class, 'inheritance'))
             @foreach ($class->inheritance() as $parent)
-                @if($loop->last && !isset($method) && !isset($property))
-                    <span class="separated">
-                        {{ $parent->name() }}
-                    </span>
+                @if ($parent->isInProjectSpace())
+                    @if($loop->last && !isset($method) && !isset($property))
+                        <span class="separated">
+                            {{ $parent->name() }}
+                        </span>
+                    @else
+                        <span class="separated">
+                            <a href="{{ url($parent->url()) }}">{{ $parent->name() }}</a>
+                        </span>
+                    @endif
+
                 @else
-                    <span class="separated">
-                        <a href="{{ url($parent->url()) }}">{{ $parent->name() }}</a>
-                    </span>
+                    <span class="separated"><i>[{{ $parent->name() }}]</i></span>
+
                 @endif
             @endforeach
         @else

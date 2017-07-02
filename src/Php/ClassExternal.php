@@ -70,4 +70,15 @@ class ClassExternal
     {
         return false;
     }
+
+    /**
+     * Always null, we do not want to try and document all related or dependent
+     * projects.
+     *
+     * @return [type] [description]
+     */
+    public function parent()
+    {
+        return null;
+    }
 }

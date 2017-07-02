@@ -11,6 +11,7 @@ use Eightfold\Documenter\Interfaces\HasDeclarations;
 use Eightfold\Documenter\Traits\DocBlockable;
 use Eightfold\Documenter\Traits\Nameable;
 use Eightfold\Documenter\Traits\Symbolic;
+use Eightfold\Documenter\Traits\HighlightableString;
 
 /**
  * Represents a `trait` within a project.
@@ -21,7 +22,8 @@ class Trait_ extends TraitReflector implements HasDeclarations
 {
     use DocBlockable,
         Nameable,
-        Symbolic;
+        Symbolic,
+        HighlightableString;
 
     public $project = null;
 
@@ -40,7 +42,6 @@ class Trait_ extends TraitReflector implements HasDeclarations
     public function methods()
     {
         $objects = $this->reflector->getMethods();
-        // dd($objects);
         if (count($objects) == 0) {
             return [];
         }
@@ -54,11 +55,6 @@ class Trait_ extends TraitReflector implements HasDeclarations
         }
         return $this->methods;
     }
-
-    // public function methods()
-    // {
-    //     return array_values($this->reflector->methods);
-    // }
 
     public function namespaceName()
     {
@@ -82,54 +78,121 @@ class Trait_ extends TraitReflector implements HasDeclarations
         return $this->url;
     }
 
+    /**
+     * [processDeclaration description]
+     * @param  [type]  $highlight          [description]
+     * @param  [type]  $withLink           [description]
+     * @param  boolean $processInheritance [description]
+     * @param  boolean $processInterfaces  [description]
+     * @param  boolean $processTraits      [description]
+     * @return [type]                      [description]
+     *
+     * @category Declarations
+     */
+    private function processDeclaration($highlight, $withLink, $showTraitKeyword = true)
+    {
+        if ($withLink) {
+            $build[] = '<a class="call-signature" href="'. url($this->url()) .'">';
+        }
+
+        $build[] = $this->processOpening($highlight, $showTraitKeyword);
+
+        $build[] = ($withLink)
+            ? '</a>'
+            : '';
+
+        return implode(' ', $build);
+    }
+
+    /**
+     * [processOpening description]
+     * @param  [type] $highlight [description]
+     * @return [type]            [description]
+     *
+     * @category Declarations
+     */
+    private function processOpening($highlight, $showTraitKeyword)
+    {
+        $build = [];
+
+        if ($showTraitKeyword) {
+            $build[] = $this->getHighlightedString('trait');
+
+        }
+
+        $build[] = $this->name();
+
+        return implode(' ', $build);
+    }
+
+    /**
+     * [largeDeclaration description]
+     *
+     * @param  boolean $highlight [description]
+     * @param  boolean $withLink  [description]
+     * @return [type]             [description]
+     *
+     * @category Declarations
+     */
     public function largeDeclaration($highlight = true, $withLink = true)
     {
-        return $this->buildDeclaration([
-            'objectType' => 'trait',
-            'highlight' => $highlight,
-            'withLink' => $withLink,
-            'showTraitKeyword' => true
-        ]);
+        return $this->processDeclaration($highlight, $withLink);
     }
 
+    /**
+     * [mediumDeclaration description]
+     *
+     * @param  boolean $highlight [description]
+     * @param  boolean $withLink  [description]
+     * @return [type]             [description]
+     *
+     * @category Declarations
+     */
     public function mediumDeclaration($highlight = true, $withLink = true)
     {
-        return $this->buildDeclaration([
-            'objectType' => 'trait',
-            'highlight' => $highlight,
-            'withLink' => $withLink,
-            'showTraitKeyword' => true
-        ]);
+        return $this->processDeclaration($highlight, $withLink);
     }
 
+    /**
+     * [smallDeclaration description]
+     *
+     * @param  boolean $highlight [description]
+     * @param  boolean $withLink  [description]
+     * @return [type]             [description]
+     *
+     * @category Declarations
+     */
     public function smallDeclaration($highlight = true, $withLink = true)
     {
-        return $this->buildDeclaration([
-            'objectType' => 'trait',
-            'highlight' => $highlight,
-            'withLink' => $withLink,
-            'showTraitKeyword' => true,
-            'showTraitKeyword' => true
-        ]);
+        return $this->processDeclaration($highlight, $withLink);
     }
 
+    /**
+     * [miniDeclaration description]
+     *
+     * @param  boolean $highlight [description]
+     * @param  boolean $withLink  [description]
+     * @return [type]             [description]
+     *
+     * @category Declarations
+     */
     public function miniDeclaration($highlight = true, $withLink = true)
     {
-        return $this->buildDeclaration([
-            'objectType' => 'trait',
-            'highlight' => $highlight,
-            'withLink' => $withLink,
-            'showTraitKeyword' => true
-        ]);
+        return $this->processDeclaration($highlight, $withLink);
     }
 
+    /**
+     * [microDeclaration description]
+     *
+     * @param  boolean $highlight    [description]
+     * @param  boolean $withLink     [description]
+     * @param  boolean $showKeywords [description]
+     * @return [type]                [description]
+     *
+     * @category Declarations
+     */
     public function microDeclaration($highlight = true, $withLink = true, $showKeywords = true)
     {
-        return $this->buildDeclaration([
-            'objectType' => 'trait',
-            'highlight' => $highlight,
-            'withLink' => $withLink,
-            'showTraitKeyword' => false
-        ]);
+        return $this->processDeclaration($highlight, $withLink);
     }
 }
