@@ -28,8 +28,8 @@ class Parameter extends ArgumentReflector
         $this->method = $method;
         $this->project = $this->method->class->project;
         $this->reflector = $reflector;
-        $this->node = $this->reflector->getNode();
-        $this->context = $this->reflector->context;
+        // $this->node = $this->reflector->getNode();
+        // $this->context = $this->reflector->context;
     }
 
     /**

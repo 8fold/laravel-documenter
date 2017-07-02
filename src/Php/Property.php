@@ -43,7 +43,7 @@ class Property extends PropertyReflector implements HasDeclarations
         $this->project = $class->project;
         $this->reflector = $reflector;
         $this->node = $this->reflector->getNode();
-        $this->context = $this->reflector->context;
+        // $this->context = $this->reflector->context;
     }
 
     public function url()

@@ -56,8 +56,8 @@ class Method extends MethodReflector
         $this->project = $this->class->project;
         $this->reflector = $reflector;
         $this->node = $this->reflector->getNode();
-        $this->context = $this->reflector->context;
-        $this->docBlock = new DocBlock($this, $this->node, $this->reflector->context, null);
+        // $this->context = $this->reflector->context;
+        // $this->docBlock = new DocBlock($this, $this->node, $this->reflector->context, null);
     }
 
     public function url()
