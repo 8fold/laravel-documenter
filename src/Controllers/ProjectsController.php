@@ -4,34 +4,10 @@ namespace Eightfold\Documenter\Controllers;
 
 use App\Http\Controllers\Controller;
 
-// use \RecursiveDirectoryIterator;
 use \DirectoryIterator;
-
-use phpDocumentor\Reflection\FileReflector;
-use phpDocumentor\Reflection\Traverser;
-use phpDocumentor\Reflection\DocBlock;
-
-// use Eightfold\Documenter\Models\Project;
-use Eightfold\Documenter\Php\ObjectClass;
-use Eightfold\Documenter\Php\ObjectProperty;
-use Eightfold\Documenter\Php\Trait_;
-use Eightfold\Documenter\Php\ObjectInterface;
-
-use Eightfold\Documenter\Php\ProjectClass;
-use Eightfold\Documenter\Php\ProjectTrait;
-use Eightfold\Documenter\Php\Method;
 
 use Eightfold\Documenter\Php\Project as phpProject;
 
-use GrahamCampbell\Markdown\Facades\Markdown;
-
-/**
- * This should appear??
- *
- * Creating things.
- *
- * @deprecated Something something else
- */
 class ProjectsController extends Controller
 {
     /**
@@ -40,13 +16,6 @@ class ProjectsController extends Controller
      * @var array
      */
     private $projects = [];
-
-    /**
-     * @deprecated Might be able to deprecate this.
-     *
-     * @var array
-     */
-    private $versions = [];
 
     /**
      * Prepare to view a list of all projects.
@@ -74,6 +43,25 @@ class ProjectsController extends Controller
         }
         $versions = $project->versions();
         return redirect(url($projectSlug .'/'. $versions[0]));
+    }
+
+    /**
+     * Prepare view for a specific project version.
+     *
+     * @param  [type] $project_slug [description]
+     * @param  [type] $version_slug [description]
+     * @return [type]               [description]
+     */
+    public function viewProjectVersion($projectSlug, $versionSlug)
+    {
+        $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
+        $classes = $project->classesOrdered();
+        $traits = $project->traitsOrdered();
+        $interfaces = $project->interfaces();
+        return $this->viewWithVersion($project, $project->viewForHome(), $versionSlug)
+            ->with('classesOrdered', $classes)
+            ->with('traitsOrdered', $traits)
+            ->with('interfaces', $interfaces);
     }
 
     /**
@@ -227,25 +215,6 @@ class ProjectsController extends Controller
     }
 
     /**
-     * Prepare view for a specific project version.
-     *
-     * @param  [type] $project_slug [description]
-     * @param  [type] $version_slug [description]
-     * @return [type]               [description]
-     */
-    public function viewProjectVersion($projectSlug, $versionSlug)
-    {
-        $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
-        $classes = $project->classesOrdered();
-        $traits = $project->traitsOrdered();
-        $interfaces = $project->interfaces();
-        return $this->viewWithVersion($project, $project->viewForHome(), $versionSlug)
-            ->with('classesOrdered', $classes)
-            ->with('traitsOrdered', $traits)
-            ->with('interfaces', $interfaces);
-    }
-
-    /**
      * Prepare to view a specific class, trait, or interface.
      *
      * @param  [type] $project     [description]
@@ -271,6 +240,4 @@ class ProjectsController extends Controller
         }
         return $view;
     }
-
-
 }

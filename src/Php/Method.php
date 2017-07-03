@@ -16,12 +16,9 @@ use Eightfold\Documenter\Interfaces\HasDeclarations;
 use Eightfold\Documenter\Traits\TraitGroupDocNameParam;
 use Eightfold\Documenter\Traits\TraitGroupDeclaredStaticAccess;
 
-// use Eightfold\Documenter\Traits\DeclaredByClass;
 use Eightfold\Documenter\Traits\CanBeAbstract;
 use Eightfold\Documenter\Traits\CanBeFinal;
-// use Eightfold\Documenter\Traits\CanHaveAccess;
-// use Eightfold\Documenter\Traits\CanBeStatic;
-
+use Eightfold\Documenter\Traits\HighlightableString;
 
 /**
  * @category Symbols
@@ -30,6 +27,7 @@ class Method extends MethodReflector
 {
     use TraitGroupDocNameParam,
         TraitGroupDeclaredStaticAccess,
+        HighlightableString,
         CanBeAbstract,
         CanBeFinal;
 
@@ -163,20 +161,6 @@ class Method extends MethodReflector
             $params[] = $this->getParameterStringTODO($parameter);
         }
         return implode(', ', $params);
-    }
-
-    /**
-     * @todo Promote to superclass, or make trait.
-     *
-     * @param  [type] $label     [description]
-     * @param  [type] $elemClass [description]
-     * @return [type]            [description]
-     */
-    private function getHighlightedString($label, $elemClass = null)
-    {
-        return (is_null($elemClass))
-            ? '<span class="'. $label .'">'. $label .'</span>'
-            : '<span class="'. $elemClass .'">'. $label .'</span>';
     }
 
     /**

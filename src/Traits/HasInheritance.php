@@ -18,7 +18,6 @@ trait HasInheritance
         $parentClass = $this->project->objectWithLongName($parentNamespace);
         if (is_null($parentClass)) {
             return new ClassExternal($parentNamespaceParts);
-
         }
         return $parentClass;
     }

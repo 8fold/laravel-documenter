@@ -1,8 +1,10 @@
 <?php
 // TODO: Maybe this is worth pursuing...??
-//
+
+trait Testing
+{
 // Class_
-    public function url()
+    public function urlClass()
     {
         if (strlen($this->url) == 0) {
             $slugged = [];
@@ -18,7 +20,7 @@
     }
 
 // Method
-    public function url()
+    public function urlMethod()
     {
         if (strlen($this->url) == 0) {
             $slug = kebab_case($this->node->name);
@@ -28,13 +30,13 @@
     }
 
 // Project
-    public function url()
+    public function urlProject()
     {
         return $this->url;
     }
 
 // Property
-    public function url()
+    public function urlProperty()
     {
         if (strlen($this->url) == 0) {
             $slug = kebab_case($this->node->name);
@@ -45,7 +47,7 @@
 
 // Trait_
 
-    public function url()
+    public function urlTrait()
     {
         if (strlen($this->url) == 0) {
             $slugged = [];
@@ -59,3 +61,4 @@
         }
         return $this->url;
     }
+}

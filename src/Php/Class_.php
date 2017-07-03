@@ -18,6 +18,7 @@ use Eightfold\Documenter\Traits\Symbolic;
 use Eightfold\Documenter\Traits\CanBeAbstract;
 use Eightfold\Documenter\Traits\CanBeFinal;
 use Eightfold\Documenter\Traits\CanHaveTraits;
+use Eightfold\Documenter\Traits\HighlightableString;
 
 /**
  * Represents a `class` in a project.
@@ -30,6 +31,7 @@ class Class_ extends ClassReflector implements HasDeclarations
         Nameable,
         Symbolic,
         DocBlockable,
+        HighlightableString,
         CanBeAbstract,
         CanBeFinal,
         CanHaveTraits;
@@ -283,21 +285,6 @@ class Class_ extends ClassReflector implements HasDeclarations
 
 
         return implode(' ', $build);
-    }
-
-    /**
-     * [getHighlightedString description]
-     * @param  [type] $label     [description]
-     * @param  [type] $elemClass [description]
-     * @return [type]            [description]
-     *
-     * @category Declarations
-     */
-    private function getHighlightedString($label, $elemClass = null)
-    {
-        return (is_null($elemClass))
-            ? '<span class="'. $label .'">'. $label .'</span>'
-            : '<span class="'. $elemClass .'">'. $label .'</span>';
     }
 
     /**
