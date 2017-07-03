@@ -14,12 +14,8 @@ use Eightfold\Documenter\Php\Interface_;
 use Eightfold\Documenter\Php\Method;
 use Eightfold\Documenter\Php\Property;
 
-use Eightfold\Documenter\Traits\DocumenterViewFinder;
-
 class Project
 {
-    use DocumenterViewFinder;
-
     private $url = '';
 
     private $slug = '';
@@ -122,6 +118,38 @@ class Project
     public function title()
     {
         return Project::titleFromSlug($this->slug);
+    }
+
+    public function viewForHome()
+    {
+        return 'documenter::version.home';
+    }
+
+    public function viewForObject($object)
+    {
+        switch (get_class($object)) {
+            case 'Eightfold\Documenter\Php\Interface_':
+                return 'documenter::version.interface';
+                break;
+
+            case 'Eightfold\Documenter\Php\Trait_':
+                return 'documenter::version.trait';
+                break;
+
+            default:
+                return 'documenter::version.class';
+                break;
+        }
+    }
+
+    public function viewForMethod($method)
+    {
+        return 'documenter::version.method';
+    }
+
+    public function viewForProperty($property)
+    {
+        return 'documenter::version.property';
     }
 
 

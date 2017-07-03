@@ -32,9 +32,6 @@ trait Parameterized
     private function getParameterStringTODO($parameter, $highlight = true, $showDefault = true)
     {
         $typeHint = $this->typeHintTODO($parameter);
-        // if (is_null($typeHint)) {
-        //     return '';
-        // }
 
         $build = [];
         if (!is_null($typeHint) && strlen($typeHint->type) > 0) {
@@ -42,7 +39,7 @@ trait Parameterized
 
         }
 
-        $build[] = $this->getHighlightedString($parameter->getName(), 'parameter');
+        $build[] = $this->getHighlightedString($parameter->name(), 'parameter');
 
         if ($parameter->hasDefault()) {
             $build[] = '=';

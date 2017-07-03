@@ -16,6 +16,7 @@ trait Nameable
                 ? '<a href="'. $this->url() .'">'. $this->reflector->getShortName() .'</a>'
                 : $this->reflector->getShortName();
         }
+
         return ($withLink)
             ? '<a href="'. $this->url() .'">'. $this->reflector->getName() .'</a>'
             : $this->reflector->getName();

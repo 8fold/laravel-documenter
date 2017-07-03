@@ -27,13 +27,18 @@ class Property extends PropertyReflector implements HasDeclarations
 
     public $project = null;
 
+    /**
+     * @todo Rename to object - can be class or trait
+     *
+     * @var null
+     */
     private $class = null;
 
     private $reflector = null;
 
     private $url = '';
 
-    public function __construct(Class_ $class, PropertyReflector $reflector)
+    public function __construct($class, PropertyReflector $reflector)
     {
         $this->class = $class;
         $this->project = $class->project;

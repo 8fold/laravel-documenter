@@ -18,6 +18,13 @@ class ProjectsController extends Controller
     private $projects = [];
 
     /**
+     * Cache of all versions for a project, used only for the count.
+     *
+     * @var array
+     */
+    private $versions = [];
+
+    /**
      * Prepare to view a list of all projects.
      *
      * @return [type] [description]
@@ -192,8 +199,7 @@ class ProjectsController extends Controller
             ->with('project_slug', $project->slug())
             ->with('projects', $this->projects())
             ->with('project', $project)
-            ->with('project_namespace', $project->space())
-            ->with('title_view', $project->viewForTitle());
+            ->with('project_namespace', $project->space());
     }
 
     /**
