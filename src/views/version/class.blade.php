@@ -100,7 +100,7 @@
         @endif
     @endif
 
-    @if(count($traits) > 0)
+{{--     @if(count($traits) > 0)
         <h3>Has traits</h3>
         <dl>
         @foreach($traits as $trait)
@@ -108,6 +108,6 @@
             <dd>{!! $trait->shortDescription() !!}</dd>
         @endforeach
         </dl>
-    @endif
+    @endif --}}
 @endif
 @endsection

@@ -15,27 +15,27 @@ use Eightfold\Documenter\Traits\Nameable;
  */
 class Interface_ extends InterfaceReflector
 {
-    use Nameable;
+    // use Nameable;
 
-    private $reflector = null;
+    // private $reflector = null;
 
-    private $project = null;
+    // private $project = null;
 
-    public function __construct(Project $project, InterfaceReflector $reflector)
-    {
-        $this->project = $project;
-        $this->reflector = $reflector;
-    }
+    // public function __construct(Project $project, InterfaceReflector $reflector)
+    // {
+    //     $this->project = $project;
+    //     $this->reflector = $reflector;
+    // }
 
-    public function methods()
-    {
-        return array_values($this->reflector->methods);
-    }
+    // public function methods()
+    // {
+    //     return array_values($this->reflector->methods);
+    // }
 
-    public function namespaceName()
-    {
-        $parts = explode('\\', $this->longName());
-        array_pop($parts);
-        return implode('\\', $parts);
-    }
+    // public function namespaceName()
+    // {
+    //     $parts = explode('\\', $this->longName());
+    //     array_pop($parts);
+    //     return implode('\\', $parts);
+    // }
 }

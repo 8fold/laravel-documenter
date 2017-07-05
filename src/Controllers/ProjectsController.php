@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 
 use \DirectoryIterator;
 
-use Eightfold\Documenter\Php\Project as phpProject;
+use Eightfold\Documenter\Php\Project;
 
 class ProjectsController extends Controller
 {
@@ -43,7 +43,7 @@ class ProjectsController extends Controller
      */
     public function viewProjectOverview($projectSlug)
     {
-        $project = new phpProject($projectSlug);
+        $project = new Project($projectSlug);
         if ($project->viewExists('overview')) {
             return $this->baseViewWith($project, $project->viewForProjectOverview());
 
@@ -61,10 +61,11 @@ class ProjectsController extends Controller
      */
     public function viewProjectVersion($projectSlug, $versionSlug)
     {
-        $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
-        $classes = $project->classesOrdered();
-        $traits = $project->traitsOrdered();
-        $interfaces = $project->interfaces();
+        $dirPath = config('documenter-laravel.projects_root');
+        $project = new Project($dirPath .'/'. $projectSlug .'/'. $versionSlug);
+        $classes = $project->classesCategorized();
+        $traits = $project->traitsCategorized();
+        $interfaces = $project->interfacesCategorized();
         return $this->viewWithVersion($project, $project->viewForHome(), $versionSlug)
             ->with('classesOrdered', $classes)
             ->with('traitsOrdered', $traits)
@@ -81,7 +82,8 @@ class ProjectsController extends Controller
      */
     public function viewObject($projectSlug, $versionSlug, $all)
     {
-        $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
+        $dirPath = config('documenter-laravel.projects_root');
+        $project = new Project($dirPath .'/'. $projectSlug .'/'. $versionSlug);
         return $this->viewWithSymbols($project, $versionSlug, $all);
     }
 
@@ -96,7 +98,8 @@ class ProjectsController extends Controller
      */
     public function viewMethod($projectSlug, $versionSlug, $all, $method_name)
     {
-        $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
+        $dirPath = config('documenter-laravel.projects_root');
+        $project = new Project($dirPath .'/'. $projectSlug .'/'. $versionSlug);
         $class = $project->objectWithPath($all);
         $method = $class->methodWithSlug($method_name);
 
@@ -119,7 +122,8 @@ class ProjectsController extends Controller
      */
     public function viewProperty($projectSlug, $versionSlug, $all, $propertyName)
     {
-        $project = new phpProject('/'. $projectSlug .'/'. $versionSlug);
+        $dirPath = config('documenter-laravel.projects_root');
+        $project = new Project($dirPath .'/'. $projectSlug .'/'. $versionSlug);
         $class = $project->objectWithPath($all);
         $property = $class->propertyWithSlug($propertyName);
 
@@ -155,7 +159,7 @@ class ProjectsController extends Controller
                         if ($versionFileInfo->isDir() && !$versionFileInfo->isDot()) {
                             $versionPath = $versionFileInfo->getFilename();
                             $path = '/'. $projectPath .'/'. $versionPath;
-                            $projects[$projectPath][] = new phpProject($path);
+                            $projects[$projectPath][] = new Project($path);
                         }
                     }
                 }
@@ -196,10 +200,9 @@ class ProjectsController extends Controller
     private function baseViewWith($project, $viewName)
     {
         return view($viewName)
-            ->with('project_slug', $project->slug())
+            ->with('project_slug', $project->projectSlug())
             ->with('projects', $this->projects())
-            ->with('project', $project)
-            ->with('project_namespace', $project->space());
+            ->with('project', $project);
     }
 
     /**
@@ -217,7 +220,7 @@ class ProjectsController extends Controller
         $base = $this->baseViewWith($project, $viewName);
         return $base
             ->with('version', str_replace('-', '.', $versionSlug))
-            ->with('project_versions', $this->versions($project->slug()));
+            ->with('project_versions', $this->versions($project->projectSlug()));
     }
 
     /**
@@ -231,6 +234,7 @@ class ProjectsController extends Controller
      */
     private function viewWithSymbols($project, $versionSlug, $all, $laravelView = null)
     {
+        // dd($all);
         $object = $project->objectWithPath($all);
         $view = $project->viewForObject($object);
         if (!is_null($laravelView)) {
@@ -239,7 +243,7 @@ class ProjectsController extends Controller
 
         $view = $this->viewWithVersion($project, $view, $versionSlug)
             ->with('object', $object)
-            ->with('symbols', $object->symbolsOrdered());
+            ->with('symbols', $object->symbolsCategorized());
 
         if (get_class($object) == 'Eightfold\Documenter\Php\Class_' || get_class($object) == 'Eightfold\Documenter\Php\Trait_') {
             $view->with('traits', $object->traits());

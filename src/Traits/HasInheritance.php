@@ -15,11 +15,10 @@ trait HasInheritance
 
         $parentNamespaceParts = $this->node->extends->parts;
         $parentNamespace = implode('\\', $parentNamespaceParts);
-        $parentClass = $this->project->objectWithLongName($parentNamespace);
-        if (is_null($parentClass)) {
-            return new ClassExternal($parentNamespaceParts);
+        if ($parentClass = $this->project->objectWithLongName($parentNamespace)) {
+            return $parentClass;
         }
-        return $parentClass;
+        return new ClassExternal($parentNamespaceParts);
     }
 
     private function parentRecursive($object, $objects = [])
@@ -32,8 +31,8 @@ trait HasInheritance
         return array_reverse($objects);
     }
 
-    public function inheritance()
-    {
-        return $this->parentRecursive($this);
-    }
+    // public function inheritance()
+    // {
+    //     return $this->parentRecursive($this);
+    // }
 }

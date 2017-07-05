@@ -57,27 +57,27 @@ class Trait_ extends TraitReflector implements HasDeclarations
         return $this->methods;
     }
 
-    public function namespaceName()
-    {
-        $parts = explode('\\', $this->longName());
-        array_pop($parts);
-        return implode('\\', $parts);
-    }
+    // public function namespaceName()
+    // {
+    //     $parts = explode('\\', $this->longName());
+    //     array_pop($parts);
+    //     return implode('\\', $parts);
+    // }
 
-    public function url()
-    {
-        if (strlen($this->url) == 0) {
-            $slugged = [];
-            foreach ($this->node->namespacedName->parts as $part) {
-                $slugged[] = kebab_case($part);
-            }
-            array_shift($slugged);
-            array_shift($slugged);
-            $thisPath = implode('/', $slugged);
-            $this->url = $this->project->url() .'/'. $thisPath;
-        }
-        return $this->url;
-    }
+    // public function url()
+    // {
+    //     if (strlen($this->url) == 0) {
+    //         $slugged = [];
+    //         foreach ($this->node->namespacedName->parts as $part) {
+    //             $slugged[] = kebab_case($part);
+    //         }
+    //         array_shift($slugged);
+    //         array_shift($slugged);
+    //         $thisPath = implode('/', $slugged);
+    //         $this->url = $this->project->url() .'/'. $thisPath;
+    //     }
+    //     return $this->url;
+    // }
 
     /**
      * [processDeclaration description]
@@ -90,20 +90,20 @@ class Trait_ extends TraitReflector implements HasDeclarations
      *
      * @category Declarations
      */
-    private function processDeclaration($highlight, $withLink, $showTraitKeyword = true)
-    {
-        if ($withLink) {
-            $build[] = '<a class="call-signature" href="'. url($this->url()) .'">';
-        }
+    // private function processDeclaration($highlight, $withLink, $showTraitKeyword = true)
+    // {
+    //     if ($withLink) {
+    //         $build[] = '<a class="call-signature" href="'. url($this->url()) .'">';
+    //     }
 
-        $build[] = $this->processOpening($highlight, $showTraitKeyword);
+    //     $build[] = $this->processOpening($highlight, $showTraitKeyword);
 
-        $build[] = ($withLink)
-            ? '</a>'
-            : '';
+    //     $build[] = ($withLink)
+    //         ? '</a>'
+    //         : '';
 
-        return implode(' ', $build);
-    }
+    //     return implode(' ', $build);
+    // }
 
     /**
      * [processOpening description]
@@ -112,19 +112,19 @@ class Trait_ extends TraitReflector implements HasDeclarations
      *
      * @category Declarations
      */
-    private function processOpening($highlight, $showTraitKeyword)
-    {
-        $build = [];
+    // private function processOpening($highlight, $showTraitKeyword)
+    // {
+    //     $build = [];
 
-        if ($showTraitKeyword) {
-            $build[] = $this->getHighlightedString('trait');
+    //     if ($showTraitKeyword) {
+    //         $build[] = $this->getHighlightedString('trait');
 
-        }
+    //     }
 
-        $build[] = $this->name();
+    //     $build[] = $this->name();
 
-        return implode(' ', $build);
-    }
+    //     return implode(' ', $build);
+    // }
 
     /**
      * [largeDeclaration description]
@@ -135,10 +135,10 @@ class Trait_ extends TraitReflector implements HasDeclarations
      *
      * @category Declarations
      */
-    public function largeDeclaration($highlight = true, $withLink = true)
-    {
-        return $this->processDeclaration($highlight, $withLink);
-    }
+    // public function largeDeclaration($highlight = true, $withLink = true)
+    // {
+    //     return $this->processDeclaration($highlight, $withLink);
+    // }
 
     /**
      * [mediumDeclaration description]
@@ -149,10 +149,10 @@ class Trait_ extends TraitReflector implements HasDeclarations
      *
      * @category Declarations
      */
-    public function mediumDeclaration($highlight = true, $withLink = true)
-    {
-        return $this->processDeclaration($highlight, $withLink);
-    }
+    // public function mediumDeclaration($highlight = true, $withLink = true)
+    // {
+    //     return $this->processDeclaration($highlight, $withLink);
+    // }
 
     /**
      * [smallDeclaration description]
@@ -163,10 +163,10 @@ class Trait_ extends TraitReflector implements HasDeclarations
      *
      * @category Declarations
      */
-    public function smallDeclaration($highlight = true, $withLink = true)
-    {
-        return $this->processDeclaration($highlight, $withLink);
-    }
+    // public function smallDeclaration($highlight = true, $withLink = true)
+    // {
+    //     return $this->processDeclaration($highlight, $withLink);
+    // }
 
     /**
      * [miniDeclaration description]
@@ -177,10 +177,10 @@ class Trait_ extends TraitReflector implements HasDeclarations
      *
      * @category Declarations
      */
-    public function miniDeclaration($highlight = true, $withLink = true)
-    {
-        return $this->processDeclaration($highlight, $withLink);
-    }
+    // public function miniDeclaration($highlight = true, $withLink = true)
+    // {
+    //     return $this->processDeclaration($highlight, $withLink);
+    // }
 
     /**
      * [microDeclaration description]
@@ -192,8 +192,8 @@ class Trait_ extends TraitReflector implements HasDeclarations
      *
      * @category Declarations
      */
-    public function microDeclaration($highlight = true, $withLink = true, $showKeywords = true)
-    {
-        return $this->processDeclaration($highlight, $withLink);
-    }
+    // public function microDeclaration($highlight = true, $withLink = true, $showKeywords = true)
+    // {
+    //     return $this->processDeclaration($highlight, $withLink);
+    // }
 }

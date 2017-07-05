@@ -4,7 +4,6 @@
 
 @if(count($classesOrdered) > 0)
     <h2>Classes</h2>
-    <p>All classes are within the <code>{{ $project_namespace }}</code> namespace.</p>
     @include('documenter::partials.class-list', [
         'classes'      => $classesOrdered,
         'only_process' => ['Main'],
@@ -26,7 +25,6 @@
 
 @if(count($traitsOrdered) > 0)
     <h2>Traits</h2>
-    <p>All Traits are within the <code>{{ $project_namespace }}</code> namespace.</p>
     @include('documenter::partials.class-list', [
         'classes'      => $traitsOrdered,
         'only_process' => ['Main'],

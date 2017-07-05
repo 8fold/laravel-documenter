@@ -14,19 +14,19 @@ use Eightfold\Documenter\Traits\HighlightableString;
  */
 class Parameter extends ArgumentReflector
 {
-    use TraitGroupDocNameParam,
-        HighlightableString;
+    // use TraitGroupDocNameParam,
+    //     HighlightableString;
 
-    public $project = null;
+    // public $project = null;
 
-    private $method = null;
+    // private $method = null;
 
-    public $reflector = null;
+    // public $reflector = null;
 
-    public function __construct(Method $method, ArgumentReflector $reflector)
-    {
-        $this->method = $method;
-        $this->project = $this->method->class->project;
-        $this->reflector = $reflector;
-    }
+    // public function __construct(Method $method, ArgumentReflector $reflector)
+    // {
+    //     $this->method = $method;
+    //     $this->project = $this->method->class->project;
+    //     $this->reflector = $reflector;
+    // }
 }

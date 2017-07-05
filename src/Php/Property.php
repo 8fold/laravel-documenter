@@ -38,22 +38,22 @@ class Property extends PropertyReflector implements HasDeclarations
 
     private $url = '';
 
-    public function __construct($class, PropertyReflector $reflector)
-    {
-        $this->class = $class;
-        $this->project = $class->project;
-        $this->reflector = $reflector;
-        $this->node = $this->reflector->getNode();
-    }
+    // public function __construct($class, PropertyReflector $reflector)
+    // {
+    //     $this->class = $class;
+    //     $this->project = $class->project;
+    //     $this->reflector = $reflector;
+    //     $this->node = $this->reflector->getNode();
+    // }
 
-    public function url()
-    {
-        if (strlen($this->url) == 0) {
-            $slug = kebab_case($this->node->name);
-            $this->url = $this->class->url() .'/properties/'. $slug;
-        }
-        return $this->url;
-    }
+    // public function url()
+    // {
+    //     if (strlen($this->url) == 0) {
+    //         $slug = kebab_case($this->node->name);
+    //         $this->url = $this->class->url() .'/properties/'. $slug;
+    //     }
+    //     return $this->url;
+    // }
 
     /**
      * [processDeclaration description]
@@ -66,20 +66,20 @@ class Property extends PropertyReflector implements HasDeclarations
      *
      * @category Declarations
      */
-    private function processDeclaration($highlight, $withLink)
-    {
-        if ($withLink) {
-            $build[] = '<a class="call-signature" href="'. url($this->url()) .'">';
-        }
+    // private function processDeclaration($highlight, $withLink)
+    // {
+    //     if ($withLink) {
+    //         $build[] = '<a class="call-signature" href="'. url($this->url()) .'">';
+    //     }
 
-        $build[] = $this->processOpening($highlight);
+    //     $build[] = $this->processOpening($highlight);
 
-        $build[] = ($withLink)
-            ? '</a>'
-            : '';
+    //     $build[] = ($withLink)
+    //         ? '</a>'
+    //         : '';
 
-        return implode(' ', $build);
-    }
+    //     return implode(' ', $build);
+    // }
 
     /**
      * [processOpening description]
@@ -88,20 +88,20 @@ class Property extends PropertyReflector implements HasDeclarations
      *
      * @category Declarations
      */
-    private function processOpening($highlight)
-    {
-        $build = [];
+    // private function processOpening($highlight)
+    // {
+    //     $build = [];
 
-        if ($this->isStatic()) {
-            $build[] = $this->getHighlightedString('static');
-        }
+    //     if ($this->isStatic()) {
+    //         $build[] = $this->getHighlightedString('static');
+    //     }
 
-        $build[] = $this->getHighlightedString($this->access(), 'access');
+    //     $build[] = $this->getHighlightedString($this->access(), 'access');
 
-        $build[] = $this->name();
+    //     $build[] = $this->name();
 
-        return implode(' ', $build);
-    }
+    //     return implode(' ', $build);
+    // }
 
     /**
      * By default will be highlighted, have link, show interfaces, show traits, and

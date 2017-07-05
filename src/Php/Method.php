@@ -25,53 +25,53 @@ use Eightfold\Documenter\Traits\HighlightableString;
  */
 class Method extends MethodReflector
 {
-    use TraitGroupDocNameParam,
-        TraitGroupDeclaredStaticAccess,
-        HighlightableString,
-        CanBeAbstract,
-        CanBeFinal;
+    // use TraitGroupDocNameParam,
+    //     TraitGroupDeclaredStaticAccess,
+    //     HighlightableString,
+    //     CanBeAbstract,
+    //     CanBeFinal;
 
-    public $project = null;
+    // public $project = null;
 
-    public $class = null;
+    // public $class = null;
 
-    private $reflector = null;
+    // private $reflector = null;
 
-    private $url = '';
+    // private $url = '';
 
-    private $parameters = [];
+    // private $parameters = [];
 
-    private $returnTypes = '';
+    // private $returnTypes = '';
 
-    private $returnDescription = '';
+    // private $returnDescription = '';
 
-    public function __construct($class, MethodReflector $reflector)
-    {
-        $this->class = $class;
-        $this->project = $this->class->project;
-        $this->reflector = $reflector;
-        $this->node = $this->reflector->getNode();
-    }
+    // public function __construct($class, MethodReflector $reflector)
+    // {
+    //     $this->class = $class;
+    //     $this->project = $this->class->project;
+    //     $this->reflector = $reflector;
+    //     $this->node = $this->reflector->getNode();
+    // }
 
-    public function url()
-    {
-        if (strlen($this->url) == 0) {
-            $slug = kebab_case($this->node->name);
-            $this->url = $this->class->url() .'/methods/'. $slug;
-        }
-        return $this->url;
-    }
+    // public function url()
+    // {
+    //     if (strlen($this->url) == 0) {
+    //         $slug = kebab_case($this->node->name);
+    //         $this->url = $this->class->url() .'/methods/'. $slug;
+    //     }
+    //     return $this->url;
+    // }
 
-    public function parameters()
-    {
-        $parameters = $this->reflector->getArguments();
-        if (count($this->parameters) == 0) {
-            foreach($parameters as $parameter) {
-                $this->parameters[] = new Parameter($this, $parameter);
-            }
-        }
-        return $this->parameters;
-    }
+    // public function parameters()
+    // {
+    //     $parameters = $this->reflector->getArguments();
+    //     if (count($this->parameters) == 0) {
+    //         foreach($parameters as $parameter) {
+    //             $this->parameters[] = new Parameter($this, $parameter);
+    //         }
+    //     }
+    //     return $this->parameters;
+    // }
 
     /**
      * Whether the method returns something.
@@ -80,19 +80,19 @@ class Method extends MethodReflector
      *
      * @category Check method details
      */
-    public function hasReturn()
-    {
-        if (!is_null($this->docBlock())) {
-            return count($this->docBlock()->getTagsByName('return'));
-        }
+    // public function hasReturn()
+    // {
+    //     if (!is_null($this->docBlock())) {
+    //         return count($this->docBlock()->getTagsByName('return'));
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
-    public function returnTypes($withLink = false)
-    {
-        return $this->typeString('return', $withLink);
-    }
+    // public function returnTypes($withLink = false)
+    // {
+    //     return $this->typeString('return', $withLink);
+    // }
 
     /**
      * @todo Combine link building logic with Parameter
@@ -108,60 +108,60 @@ class Method extends MethodReflector
         return $this->returnDescription;
     }
 
-    private function processDeclaration($highlight, $withLink, $includeParams = true, $includeReturnType = true)
-    {
-        if ($withLink) {
-            $build[] = '<a class="call-signature" href="'. url($this->url()) .'">';
-        }
+    // private function processDeclaration($highlight, $withLink, $includeParams = true, $includeReturnType = true)
+    // {
+    //     if ($withLink) {
+    //         $build[] = '<a class="call-signature" href="'. url($this->url()) .'">';
+    //     }
 
-        $build[] = $this->processOpening($highlight);
+    //     $build[] = $this->processOpening($highlight);
 
-        if ($includeParams) {
-            $build[] = ($includeReturnType && $this->hasReturn())
-                ? $this->name() .'('. $this->processParameters($highlight) .'): '. $this->getHighlightedString($this->returnTypes($withLink), 'typehint')
-                : $this->name() .'('. $this->processParameters($highlight) .')';
+    //     if ($includeParams) {
+    //         $build[] = ($includeReturnType && $this->hasReturn())
+    //             ? $this->name() .'('. $this->processParameters($highlight) .'): '. $this->getHighlightedString($this->returnTypes($withLink), 'typehint')
+    //             : $this->name() .'('. $this->processParameters($highlight) .')';
 
-            } else {
-                $build[] = ($includeReturnType && $this->hasReturn())
-                    ? $this->name() .'(): '. $this->getHighlightedString($this->returnTypes($withLink), 'typehint')
-                    : $this->name() .'()';
+    //         } else {
+    //             $build[] = ($includeReturnType && $this->hasReturn())
+    //                 ? $this->name() .'(): '. $this->getHighlightedString($this->returnTypes($withLink), 'typehint')
+    //                 : $this->name() .'()';
 
-            }
+    //         }
 
 
-        $build[] = ($withLink)
-            ? '</a>'
-            : '';
+    //     $build[] = ($withLink)
+    //         ? '</a>'
+    //         : '';
 
-        return implode(' ', $build);
-    }
+    //     return implode(' ', $build);
+    // }
 
-    private function processOpening($highlight)
-    {
-        $build = [];
+    // private function processOpening($highlight)
+    // {
+    //     $build = [];
 
-        $this->getFinalKeyword($highlight, $build);
-        $this->getAbstractKeyword($highlight, $build);
-        $this->getStaticKeyword($highlight, $build);
-        $this->getAccessKeyword($highlight, $build);
+    //     $this->getFinalKeyword($highlight, $build);
+    //     $this->getAbstractKeyword($highlight, $build);
+    //     $this->getStaticKeyword($highlight, $build);
+    //     $this->getAccessKeyword($highlight, $build);
 
-        $build[] = $this->getHighlightedString('function');
+    //     $build[] = $this->getHighlightedString('function');
 
-        return implode(' ', $build);
-    }
+    //     return implode(' ', $build);
+    // }
 
-    private function processParameters($highlight)
-    {
-        if (count($this->parameters()) == 0) {
-            return;
-        }
+    // private function processParameters($highlight)
+    // {
+    //     if (count($this->parameters()) == 0) {
+    //         return;
+    //     }
 
-        $params = [];
-        foreach ($this->parameters() as $parameter) {
-            $params[] = $this->getParameterStringTODO($parameter);
-        }
-        return implode(', ', $params);
-    }
+    //     $params = [];
+    //     foreach ($this->parameters() as $parameter) {
+    //         $params[] = $this->getParameterStringTODO($parameter);
+    //     }
+    //     return implode(', ', $params);
+    // }
 
     /**
      * By default will be highlighted, have link, show interfaces, show traits, and
@@ -171,10 +171,10 @@ class Method extends MethodReflector
      * @param  boolean $withLink  Default is true. Whether to create an anchor tag.
      * @return [type]             [description]
      */
-    public function largeDeclaration($highlight = true, $withLink = true)
-    {
-        return $this->processDeclaration($highlight, $withLink);
-    }
+    // public function largeDeclaration($highlight = true, $withLink = true)
+    // {
+    //     return $this->processDeclaration($highlight, $withLink);
+    // }
 
     /**
      * Method name, parameters, type hints, defaults, function keyword, return type, and access level.
