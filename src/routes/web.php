@@ -1,6 +1,6 @@
 <?php
 
-$controller = Eightfold\Documenter\Controllers\ProjectsController::class;
+$controller = Eightfold\DocumenterLaravel\Controllers\ProjectsController::class;
 
 Route::domain('developer.'.config('documenter-laravel.documenter_domain'))->group(function () use ($controller) {
     Route::get('/', $controller.'@index');

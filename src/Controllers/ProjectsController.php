@@ -1,18 +1,19 @@
 <?php
 
-namespace Eightfold\Documenter\Controllers;
+namespace Eightfold\DocumenterLaravel\Controllers;
 
 use App\Http\Controllers\Controller;
 
 use \DirectoryIterator;
 
-use Eightfold\Documenter\Php\Project;
+use Eightfold\DocumenterLaravel\Php\Project;
 
 class ProjectsController extends Controller
 {
     /**
      * Cache of all projects found inside the projects root directory.
      *
+     * @categoryDescription
      * @var array
      */
     private $projects = [];
@@ -36,6 +37,62 @@ class ProjectsController extends Controller
     }
 
     /**
+     * Prepare view for a specific project version.
+     *
+     * @param  [type] $project_slug [description]
+     * @param  [type] $version_slug [description]
+     * @return [type]               [description]
+     */
+    public function viewProjectVersion($projectSlug, $versionSlug)
+    {
+        $dirPath = config('documenter-laravel.projects_root');
+        $project = new Project($dirPath .'/'. $projectSlug .'/'. $versionSlug);
+
+        $classes = $project->classesCategorized();
+        $traits = $project->traitsCategorized();
+        $interfaces = $project->interfacesCategorized();
+        return $this->viewWithVersion($project, $project->viewForHome(), $versionSlug)
+            ->with('classesOrdered', $classes)
+            ->with('traitsOrdered', $traits)
+            ->with('interfacesOrdered', $interfaces);
+    }
+
+    /**
+     * Get projects and versions from the config projects root.
+     *
+     * @return [type] [description]
+     *
+     * @category Utilities
+     */
+    private function projects()
+    {
+        if (count($this->projects) > 0) {
+            return $this->projects;
+        }
+        $projects = [];
+        $dirPath = config('documenter-laravel.projects_root');
+        if (file_exists($dirPath)) {
+            $directory = new DirectoryIterator($dirPath);
+            foreach ($directory as $projectFileInfo) {
+                if ($projectFileInfo->isDir() && !$projectFileInfo->isDot()) {
+                    $projectPath = $projectFileInfo->getFilename();
+                    $projectDir = new DirectoryIterator($projectFileInfo->getPathname());
+                    foreach ($projectDir as $versionFileInfo) {
+                        if ($versionFileInfo->isDir() && !$versionFileInfo->isDot()) {
+                            $versionPath = $versionFileInfo->getFilename();
+                            $path = '/'. $projectPath .'/'. $versionPath;
+                            $projects[$projectPath][] = new Project($path);
+                        }
+                    }
+                }
+            }
+        }
+        $this->projects = $projects;
+
+        return $this->projects;
+    }
+
+    /**
      * Prepare to view a specific project.
      *
      * @param  [type] $projectSlug [description]
@@ -50,26 +107,6 @@ class ProjectsController extends Controller
         }
         $versions = $project->versions();
         return redirect(url($projectSlug .'/'. $versions[0]));
-    }
-
-    /**
-     * Prepare view for a specific project version.
-     *
-     * @param  [type] $project_slug [description]
-     * @param  [type] $version_slug [description]
-     * @return [type]               [description]
-     */
-    public function viewProjectVersion($projectSlug, $versionSlug)
-    {
-        $dirPath = config('documenter-laravel.projects_root');
-        $project = new Project($dirPath .'/'. $projectSlug .'/'. $versionSlug);
-        $classes = $project->classesCategorized();
-        $traits = $project->traitsCategorized();
-        $interfaces = $project->interfacesCategorized();
-        return $this->viewWithVersion($project, $project->viewForHome(), $versionSlug)
-            ->with('classesOrdered', $classes)
-            ->with('traitsOrdered', $traits)
-            ->with('interfaces', $interfaces);
     }
 
     /**
@@ -108,7 +145,7 @@ class ProjectsController extends Controller
         // TODO: Remove need for "class"
         return $view
             ->with('class', $class)
-            ->with('method', $method);
+            ->with('symbol', $method);
     }
 
     /**
@@ -132,42 +169,7 @@ class ProjectsController extends Controller
         // TODO: Remove need for class
         return $view
             ->with('class', $class)
-            ->with('property', $property);
-    }
-
-    /**
-     * Get projects and versions from the config projects root.
-     *
-     * @return [type] [description]
-     *
-     * @category Utilities
-     */
-    private function projects()
-    {
-        if (count($this->projects) > 0) {
-            return $this->projects;
-        }
-        $projects = [];
-        $dirPath = config('documenter-laravel.projects_root');
-        if (file_exists($dirPath)) {
-            $directory = new DirectoryIterator($dirPath);
-            foreach ($directory as $projectFileInfo) {
-                if ($projectFileInfo->isDir() && !$projectFileInfo->isDot()) {
-                    $projectPath = $projectFileInfo->getFilename();
-                    $projectDir = new DirectoryIterator($projectFileInfo->getPathname());
-                    foreach ($projectDir as $versionFileInfo) {
-                        if ($versionFileInfo->isDir() && !$versionFileInfo->isDot()) {
-                            $versionPath = $versionFileInfo->getFilename();
-                            $path = '/'. $projectPath .'/'. $versionPath;
-                            $projects[$projectPath][] = new Project($path);
-                        }
-                    }
-                }
-            }
-        }
-        $this->projects = $projects;
-
-        return $this->projects;
+            ->with('symbol', $property);
     }
 
     /**
@@ -240,6 +242,8 @@ class ProjectsController extends Controller
         if (!is_null($laravelView)) {
             $view = $laravelView;
         }
+
+        $objectTypeString =
 
         $view = $this->viewWithVersion($project, $view, $versionSlug)
             ->with('object', $object)

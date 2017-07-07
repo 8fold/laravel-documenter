@@ -4,44 +4,48 @@
 
 @if(count($classesOrdered) > 0)
     <h2>Classes</h2>
-    @include('documenter::partials.class-list', [
-        'classes'      => $classesOrdered,
-        'only_process' => ['Main'],
-        'typeOrder'    => ['concrete', 'abstract']
-    ])
+    {!! $project->definitionListForSymbols($classesOrdered, [
+            'onlyCategories' => ['Main']
+        ]) !!}
 
-    @include('documenter::partials.class-list', [
-        'classes'   => $classesOrdered,
-        'skip'      => ['NO_CATEGORY', 'Main'],
-        'typeOrder' => ['concrete', 'abstract']
-    ])
+    {!! $project->definitionListForSymbols($classesOrdered, [
+            'skipCategories' => ['NO_CATEGORY', 'Main']
+        ]) !!}
 
-    @include('documenter::partials.class-list', [
-        'classes'      => $classesOrdered,
-        'only_process' => ['NO_CATEGORY'],
-        'typeOrder'    => ['concrete', 'abstract']
-    ])
+    {!! $project->definitionListForSymbols($classesOrdered, [
+            'onlyCategories' => ['NO_CATEGORY']
+        ]) !!}
+
 @endif
 
 @if(count($traitsOrdered) > 0)
     <h2>Traits</h2>
-    @include('documenter::partials.class-list', [
-        'classes'      => $traitsOrdered,
-        'only_process' => ['Main'],
-        'typeOrder'    => ['concrete', 'abstract', 'NO_TYPE']
-    ])
+    {!! $project->definitionListForSymbols($traitsOrdered, [
+            'onlyCategories' => ['Main']
+        ]) !!}
 
-    @include('documenter::partials.class-list', [
-        'classes'   => $traitsOrdered,
-        'skip'      => ['NO_CATEGORY', 'Main'],
-        'typeOrder' => ['concrete', 'abstract', 'NO_TYPE']
-    ])
+    {!! $project->definitionListForSymbols($traitsOrdered, [
+            'skipCategories' => ['NO_CATEGORY', 'Main']
+        ]) !!}
 
-    @include('documenter::partials.class-list', [
-        'classes'      => $traitsOrdered,
-        'only_process' => ['NO_CATEGORY'],
-        'typeOrder'    => ['concrete', 'abstract', 'NO_TYPE']
-    ])
+    {!! $project->definitionListForSymbols($traitsOrdered, [
+            'onlyCategories' => ['NO_CATEGORY']
+        ]) !!}
+@endif
+
+@if(count($interfacesOrdered) > 0)
+    <h2>Interfaces</h2>
+    {!! $project->definitionListForSymbols($interfacesOrdered, [
+            'onlyCategories' => ['Main']
+        ]) !!}
+
+    {!! $project->definitionListForSymbols($interfacesOrdered, [
+            'skipCategories' => ['NO_CATEGORY', 'Main']
+        ]) !!}
+
+    {!! $project->definitionListForSymbols($interfacesOrdered, [
+            'onlyCategories' => ['NO_CATEGORY']
+        ]) !!}
 @endif
 
 @endsection
