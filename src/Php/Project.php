@@ -2,65 +2,45 @@
 
 namespace Eightfold\DocumenterLaravel\Php;
 
+use Illuminate\Support\Facades\View;
+
 use Eightfold\DocumenterPhp\Project as phpProject;
 
 class Project extends phpProject
 {
     /**
-     * The title to display for the project.
+     * When a user selects a project (not a version), use this view.
      *
-     * @return String The title for the project established in the configuration.
+     * The default order check:
+     * - a directory within your /views/documenter directory named the project slug.
+     *   ex. /views/documenter/[project-slug]. The directory has an overview.blade.php
+     *   file within it.
+     * - a documenterProjectOverview.blade.php template in your /views/documenter
+     *   directory.
+     * - a documenterProjectOverview.blade.php template in your /views directory, which
+     *   is the default Laravel behavior.
+     * - redirect to the version of the project with the highest version number.
      *
-     * @category Display
-     *
+     * @return [type] [description]
      */
-    static public function titleFromSlug($slug)
+    public function viewForProjectOverview()
     {
-        $allTitles = config('documenter-laravel.project_titles');
-        if (array_key_exists($slug, $allTitles)) {
-            return $allTitles[$slug];
+        $return = [];
+        $return['redirect'] = false;
+        if (View::exists('documenter.'. $this->slug)) {
+            $return['name'] = 'documenter.'. $this->slug;
+
+        } elseif (View::exists('documenter.projectOverview')) {
+            $return['name'] = 'documenter.projectOverview';
+
+        } elseif (View::exists('documenter::projectOverview')) {
+            $return['name'] = 'documenter::projectOverview';
+
+        } else {
+            $return['redirect'] = true;
+            $return['name'] = $this->versionWithSlug($this->highestVersionSlug)->url;
 
         }
-        return 'Project name unknown';
-    }
-
-    /**
-     * @return String Calls static method titleFromSlug()
-     */
-    public function title()
-    {
-        return Project::titleFromSlug($this->projectSlug());
-    }
-
-    public function viewForHome()
-    {
-        return 'documenter::version.home';
-    }
-
-    public function viewForObject($object)
-    {
-        switch (get_class($object)) {
-            case 'Eightfold\Documenter\Php\Interface_':
-                return 'documenter::version.interface';
-                break;
-
-            case 'Eightfold\Documenter\Php\Trait_':
-                return 'documenter::version.trait';
-                break;
-
-            default:
-                return 'documenter::version.class';
-                break;
-        }
-    }
-
-    public function viewForMethod($method)
-    {
-        return 'documenter::version.method';
-    }
-
-    public function viewForProperty($property)
-    {
-        return 'documenter::version.property';
+        return (object) $return;
     }
 }

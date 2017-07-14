@@ -4,15 +4,15 @@
 
 @if(count($classesOrdered) > 0)
     <h2>Classes</h2>
-    {!! $project->definitionListForSymbols($classesOrdered, [
+    {!! $version->definitionListForSymbols($classesOrdered, [
             'onlyCategories' => ['Main']
         ]) !!}
 
-    {!! $project->definitionListForSymbols($classesOrdered, [
+    {!! $version->definitionListForSymbols($classesOrdered, [
             'skipCategories' => ['NO_CATEGORY', 'Main']
         ]) !!}
 
-    {!! $project->definitionListForSymbols($classesOrdered, [
+    {!! $version->definitionListForSymbols($classesOrdered, [
             'onlyCategories' => ['NO_CATEGORY']
         ]) !!}
 
@@ -20,30 +20,30 @@
 
 @if(count($traitsOrdered) > 0)
     <h2>Traits</h2>
-    {!! $project->definitionListForSymbols($traitsOrdered, [
+    {!! $version->definitionListForSymbols($traitsOrdered, [
             'onlyCategories' => ['Main']
         ]) !!}
 
-    {!! $project->definitionListForSymbols($traitsOrdered, [
+    {!! $version->definitionListForSymbols($traitsOrdered, [
             'skipCategories' => ['NO_CATEGORY', 'Main']
         ]) !!}
 
-    {!! $project->definitionListForSymbols($traitsOrdered, [
+    {!! $version->definitionListForSymbols($traitsOrdered, [
             'onlyCategories' => ['NO_CATEGORY']
         ]) !!}
 @endif
 
 @if(count($interfacesOrdered) > 0)
     <h2>Interfaces</h2>
-    {!! $project->definitionListForSymbols($interfacesOrdered, [
+    {!! $version->definitionListForSymbols($interfacesOrdered, [
             'onlyCategories' => ['Main']
         ]) !!}
 
-    {!! $project->definitionListForSymbols($interfacesOrdered, [
+    {!! $version->definitionListForSymbols($interfacesOrdered, [
             'skipCategories' => ['NO_CATEGORY', 'Main']
         ]) !!}
 
-    {!! $project->definitionListForSymbols($interfacesOrdered, [
+    {!! $version->definitionListForSymbols($interfacesOrdered, [
             'onlyCategories' => ['NO_CATEGORY']
         ]) !!}
 @endif

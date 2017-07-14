@@ -34,6 +34,15 @@ return [
      * A dictionary where the key is the directory name within projects_root and
      * the value is the title to display for the project.
      *
+     * ex.
+     *
+     * [
+     *     'documenter-php' => [
+     *         'title' => 'Documenter PHP',
+     *         'category' => 'API Documentation Generators'
+     *     ]
+     * ]
+     *
      */
-    'project_titles' => []
+    'projects' => []
 ];

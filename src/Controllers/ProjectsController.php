@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 
 use \DirectoryIterator;
 
+use Eightfold\DocumenterLaravel\Php\Documenter;
 use Eightfold\DocumenterLaravel\Php\Project;
+use Eightfold\DocumenterLaravel\Php\Version;
 
 class ProjectsController extends Controller
 {
@@ -28,16 +30,21 @@ class ProjectsController extends Controller
     /**
      * Prepare to view a list of all projects.
      *
+     * Root
+     *
      * @return [type] [description]
      */
     public function index()
     {
-        return view('documenter::overview')
-            ->with('projects', $this->projects());
+        return view($this->documenter()->viewForIndex())
+            ->with('documenter', $this->documenter())
+            ->with('projects', $this->documenter()->projects);
     }
 
     /**
      * Prepare view for a specific project version.
+     *
+     * /{project-slug}/{project-version}
      *
      * @param  [type] $project_slug [description]
      * @param  [type] $version_slug [description]
@@ -45,72 +52,25 @@ class ProjectsController extends Controller
      */
     public function viewProjectVersion($projectSlug, $versionSlug)
     {
-        $dirPath = config('documenter-laravel.projects_root');
-        $project = new Project($dirPath .'/'. $projectSlug .'/'. $versionSlug);
-
-        $classes = $project->classesCategorized();
-        $traits = $project->traitsCategorized();
-        $interfaces = $project->interfacesCategorized();
-        return $this->viewWithVersion($project, $project->viewForHome(), $versionSlug)
+        $version = $this->version($projectSlug, $versionSlug);
+        $classes = $version->classesCategorized();
+        $traits = $version->traitsCategorized();
+        $interfaces = $version->interfacesCategorized();
+        return view($version->viewForVersion())
+            ->with('documenter', $this->documenter())
+            ->with('projects', $this->documenter()->projects)
+            ->with('project', $version->project)
+            ->with('project_slug', $projectSlug)
+            ->with('version', $version)
             ->with('classesOrdered', $classes)
             ->with('traitsOrdered', $traits)
             ->with('interfacesOrdered', $interfaces);
     }
 
     /**
-     * Get projects and versions from the config projects root.
-     *
-     * @return [type] [description]
-     *
-     * @category Utilities
-     */
-    private function projects()
-    {
-        if (count($this->projects) > 0) {
-            return $this->projects;
-        }
-        $projects = [];
-        $dirPath = config('documenter-laravel.projects_root');
-        if (file_exists($dirPath)) {
-            $directory = new DirectoryIterator($dirPath);
-            foreach ($directory as $projectFileInfo) {
-                if ($projectFileInfo->isDir() && !$projectFileInfo->isDot()) {
-                    $projectPath = $projectFileInfo->getFilename();
-                    $projectDir = new DirectoryIterator($projectFileInfo->getPathname());
-                    foreach ($projectDir as $versionFileInfo) {
-                        if ($versionFileInfo->isDir() && !$versionFileInfo->isDot()) {
-                            $versionPath = $versionFileInfo->getFilename();
-                            $path = '/'. $projectPath .'/'. $versionPath;
-                            $projects[$projectPath][] = new Project($path);
-                        }
-                    }
-                }
-            }
-        }
-        $this->projects = $projects;
-
-        return $this->projects;
-    }
-
-    /**
-     * Prepare to view a specific project.
-     *
-     * @param  [type] $projectSlug [description]
-     * @return [type]              [description]
-     */
-    public function viewProjectOverview($projectSlug)
-    {
-        $project = new Project($projectSlug);
-        if ($project->viewExists('overview')) {
-            return $this->baseViewWith($project, $project->viewForProjectOverview());
-
-        }
-        $versions = $project->versions();
-        return redirect(url($projectSlug .'/'. $versions[0]));
-    }
-
-    /**
      * Prepare to view a class, trait, or interface within the project.
+     *
+     * /{project-slug}/{project-version}/{namespace-slug}/{object-slug}
      *
      * @param  [type] $projectSlug [description]
      * @param  [type] $versionSlug [description]
@@ -119,13 +79,31 @@ class ProjectsController extends Controller
      */
     public function viewObject($projectSlug, $versionSlug, $all)
     {
-        $dirPath = config('documenter-laravel.projects_root');
-        $project = new Project($dirPath .'/'. $projectSlug .'/'. $versionSlug);
-        return $this->viewWithSymbols($project, $versionSlug, $all);
+        $version = $this->version($projectSlug, $versionSlug);
+        $classes = $version->classesCategorized();
+        $traits = $version->traitsCategorized();
+        $interfaces = $version->interfacesCategorized();
+        $object = $version->objectWithPath($all);
+
+        $view = view($version->viewForObject($object))
+            ->with('documenter', $this->documenter())
+            ->with('projects', $this->documenter()->projects)
+            ->with('project', $version->project)
+            ->with('version', $version)
+            ->with('object', $object)
+            ->with('symbols', $object->symbolsCategorized());
+
+        if (get_class($object) == 'Eightfold\Documenter\Php\Class_' || get_class($object) == 'Eightfold\Documenter\Php\Trait_') {
+            $view->with('traits', $object->traits());
+        }
+        return $view;
     }
 
     /**
      * Prepare to view a method within a class, trait, or interface.
+     *
+     * /{project-slug}/{project-version}
+     * /{namespace-slug}/{object-slug}/methods/{method-slug}
      *
      * @param  [type] $projectSlug [description]
      * @param  [type] $versionSlug [description]
@@ -133,23 +111,29 @@ class ProjectsController extends Controller
      * @param  [type] $method_name [description]
      * @return [type]              [description]
      */
-    public function viewMethod($projectSlug, $versionSlug, $all, $method_name)
+    public function viewMethod($projectSlug, $versionSlug, $all, $methodName)
     {
-        $dirPath = config('documenter-laravel.projects_root');
-        $project = new Project($dirPath .'/'. $projectSlug .'/'. $versionSlug);
-        $class = $project->objectWithPath($all);
-        $method = $class->methodWithSlug($method_name);
-
-        $view = $this->viewWithSymbols($project, $versionSlug, $all, $project->viewForMethod($method));
+        $version = $this->version($projectSlug, $versionSlug);
+        $object = $version->objectWithPath($all);
+        $method = $object->methodWithSlug($methodName);
 
         // TODO: Remove need for "class"
-        return $view
-            ->with('class', $class)
+        return view($version->viewMethod($method))
+            ->with('documenter', $this->documenter())
+            ->with('projects', $this->documenter()->projects)
+            ->with('project', $version->project)
+            ->with('version', $version)
+            ->with('object', $object)
+            ->with('class', $object)
+            ->with('symbols', $object->symbolsCategorized())
             ->with('symbol', $method);
     }
 
     /**
      * Prepare to view a property wtihin a class or trait.
+     *
+     * /{project-slug}/{project-version}
+     * /{namespace-slug}/{object-slug}/properties/{property-slug}
      *
      * @param  [type] $projectSlug  [description]
      * @param  [type] $versionSlug  [description]
@@ -159,99 +143,56 @@ class ProjectsController extends Controller
      */
     public function viewProperty($projectSlug, $versionSlug, $all, $propertyName)
     {
-        $dirPath = config('documenter-laravel.projects_root');
-        $project = new Project($dirPath .'/'. $projectSlug .'/'. $versionSlug);
-        $class = $project->objectWithPath($all);
-        $property = $class->propertyWithSlug($propertyName);
+        $version = $this->version($projectSlug, $versionSlug);
+        $object = $version->objectWithPath($all);
+        $property = $object->propertyWithSlug($propertyName);
 
-        $view = $this->viewWithSymbols($project, $versionSlug, $all, $project->viewForProperty($property));
-
-        // TODO: Remove need for class
-        return $view
-            ->with('class', $class)
+        // TODO: Remove need for "class"
+        return view($version->viewProperty($property))
+            ->with('documenter', $this->documenter())
+            ->with('projects', $this->documenter()->projects)
+            ->with('project', $version->project)
+            ->with('version', $version)
+            ->with('object', $object)
+            ->with('class', $object)
+            ->with('symbols', $object->symbolsCategorized())
             ->with('symbol', $property);
     }
 
+    private function documenter()
+    {
+        $dirPath = config('documenter-laravel.projects_root');
+        $projectsArray = config('documenter-laravel.projects');
+        $documenter = new Documenter($dirPath, $projectsArray);
+        return $documenter;
+    }
+
+    private function project($slug)
+    {
+        $project = $this->documenter()->projectWithSlug($slug);
+        return new Project($project->documenter, $slug, $project->title, $project->category);
+    }
+
+    private function version($slug, $versionSlug)
+    {
+        $project = $this->project($slug);
+        return new Version($project, $versionSlug);
+    }
+
     /**
-     * Get versions for a specified project.
+     * Prepare to view a specific project.
      *
+     * /{project-slug}
      * @param  [type] $projectSlug [description]
      * @return [type]              [description]
-     *
-     * @category Utilities
      */
-    private function versions($projectSlug)
+    public function viewProjectOverview($projectSlug)
     {
-        $projects = $this->projects();
-        if (count($this->versions) == 0 && isset($projects[$projectSlug])) {
-            return $projects[$projectSlug];
-
+        if ($result = $this->project($projectSlug)->viewForProjectOverview()) {
+            if ($result->redirect) {
+                return redirect($result->name);
+            }
+            return view($result->name);
         }
-        return [];
-    }
-
-    /**
-     * Prepare universal view with required paramaters for navigation and whatnot.
-     *
-     * @param  [type] $project  [description]
-     * @param  [type] $viewName [description]
-     * @return [type]           [description]
-     *
-     * @category Utilities
-     */
-    private function baseViewWith($project, $viewName)
-    {
-        return view($viewName)
-            ->with('project_slug', $project->projectSlug())
-            ->with('projects', $this->projects())
-            ->with('project', $project);
-    }
-
-    /**
-     * Prepare for a specific project version. (duplicate??)
-     *
-     * @param  [type] $project     [description]
-     * @param  [type] $viewName    [description]
-     * @param  [type] $versionSlug [description]
-     * @return [type]              [description]
-     *
-     * @category Utilities
-     */
-    private function viewWithVersion($project, $viewName, $versionSlug)
-    {
-        $base = $this->baseViewWith($project, $viewName);
-        return $base
-            ->with('version', str_replace('-', '.', $versionSlug))
-            ->with('project_versions', $this->versions($project->projectSlug()));
-    }
-
-    /**
-     * Prepare to view a specific class, trait, or interface.
-     *
-     * @param  [type] $project     [description]
-     * @param  [type] $versionSlug [description]
-     * @param  [type] $all         [description]
-     * @param  [type] $laravelView [description]
-     * @return [type]              [description]
-     */
-    private function viewWithSymbols($project, $versionSlug, $all, $laravelView = null)
-    {
-        // dd($all);
-        $object = $project->objectWithPath($all);
-        $view = $project->viewForObject($object);
-        if (!is_null($laravelView)) {
-            $view = $laravelView;
-        }
-
-        $objectTypeString =
-
-        $view = $this->viewWithVersion($project, $view, $versionSlug)
-            ->with('object', $object)
-            ->with('symbols', $object->symbolsCategorized());
-
-        if (get_class($object) == 'Eightfold\Documenter\Php\Class_' || get_class($object) == 'Eightfold\Documenter\Php\Trait_') {
-            $view->with('traits', $object->traits());
-        }
-        return $view;
     }
 }

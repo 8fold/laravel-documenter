@@ -1,3 +1,4 @@
+{{-- Rename this template to "object" --}}
 @extends('documenter::layouts.app')
 @section('content')
 {!! $object->objectTypeTitle !!}
