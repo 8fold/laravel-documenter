@@ -1,0 +1,220 @@
+@mixin code-highlighting() {
+  font-family: 'SF Mono', Menlo, monospace;
+  text-decoration: none;
+  color: $color-black-ef;
+
+  .access,
+  .static,
+  .abstract,
+  .final,
+  .extends,
+  .implements-label,
+  .traits-label {
+    color: $color-red-dark;
+  }
+
+  .related {
+    color: $color-green;
+    font-style: italic;
+  }
+
+  .function,
+  .property,
+  .typehint {
+    color: $color-key;
+    font-style: italic;
+  }
+
+  .class,
+  .trait,
+  .interface {
+    color: $color-key;
+  }
+
+  .comment {
+    color: $color-gray;
+  }
+
+  .parameter {
+    color: $color-yellow;
+  }
+}
+
+.documenter-wrapper {
+  .method-type {
+    font-weight: $font-normal;
+  }
+
+  .strike {
+    color: $color-red-dark;
+    text-decoration:line-through;
+  }
+
+  code {
+    @include code-highlighting()
+  }
+
+  dt {
+    margin-bottom: 1rem;
+  }
+
+  dd {
+    margin-bottom: 2rem;
+  }
+
+  a.call-signature {
+    @include code-highlighting()
+
+    border-bottom: 1px solid transparent;
+    &:hover {
+      border-bottom: 1px dashed $color-key;
+    }
+  }
+
+  h1 {
+    small.subhead {
+      font-size: $h3-font-size;
+      font-weight: $font-normal;
+      color: $color-gray;
+      position: relative;
+      top: -1rem;
+    }
+
+    .parameter {
+      font-weight: $font-normal;
+    }
+
+    .deprecated {
+      display: inline-block;
+      font-weight: $font-normal;
+      font-size: $lead-font-size;
+      margin: 1rem 0;
+      padding: 0.5rem;
+      // color: $color-white;
+      background-color: $color-yellow-light;
+      border: 1px solid $color-yellow;
+      border-radius: $border-radius;
+    }
+  }
+
+  h1 + p {
+    font-size: $lead-font-size;
+  }
+
+  .font-lead {
+    font-size: $lead-font-size;
+  }
+
+  pre {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid $color-gray-light;
+    background-color: $color-gray-lighter;
+  }
+
+  #header-sub-nav {
+    background-color: $color-white;
+    position: relative;
+    z-index: 10;
+    button,
+    .button {
+      display: inline-block;
+      font-size: $base-font-size;
+      padding: 0;
+      margin: 0;
+      color: $color-key;
+      background-color: transparent;
+      font-weight: $font-normal;
+    }
+
+    button:hover {
+      text-decoration: underline;
+    }
+
+    span.button {
+      color: $color-black;
+      cursor: auto;
+    }
+
+    nav {
+      margin-top: 2rem;
+      float: left;
+    }
+
+    nav:nth-of-type(1) {
+      margin-right: 1rem;
+      float: none;
+      clear: both;
+
+    }
+
+    nav:nth-of-type(2) {
+      span.nav-label {
+        padding-left: 0;
+      }
+    }
+
+    .function-navigator {
+      // .nav-label {
+      //   display: inline-block;
+      //   margin: 0.5rem 0;
+      //   padding: 1rem;
+      //   padding-right: 0;
+      // }
+    }
+
+    ul {
+      @include unstyled-list();
+      background-color: $color-white;
+      height: auto;
+      min-width: 8rem;
+      overflow: hidden;
+      overflow-y: auto;
+      background-color: $color-white-ef;
+      border: 1px solid $color-key-dark;
+      border-radius: $border-radius;
+      -webkit-transition: all 0.3s;
+      -moz-transition: all 0.3s;
+      -ms-transition: all 0.3s;
+      -o-transition: all 0.3s;
+      transition: all 0.3s;
+      @include media($large) {
+        top: 4.5rem;      
+        position: absolute;
+        height: auto;
+      }
+      &.collapsed {
+          height: 0;
+          border: none;
+      }    
+    }
+
+    nav:nth-of-type(1) ul {
+      // left: 9rem;
+    }
+
+    nav:nth-of-type(2) ul {
+      // left: 29rem;
+      text-align: center;
+    }
+
+    nav:nth-of-type(3) ul {
+      // right: 5rem;
+    }
+
+    li {
+      margin: 0;
+      padding: 0;
+      line-height: 1;
+      a {
+        display: inline-block;
+        width: 100%;
+        padding: 1rem;
+      }    
+    }
+    .separated:before {
+      content: " : ";  
+    }
+  }  
+}
+

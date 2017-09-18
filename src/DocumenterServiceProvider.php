@@ -1,13 +1,13 @@
 <?php
 
-namespace Eightfold\DocumentorLaravel;
+namespace Eightfold\DocumenterLaravel;
 
 use Illuminate\Support\ServiceProvider;
 
 /**
  * Laravel Service Provider
  */
-class DocumentorServiceProvider extends ServiceProvider
+class DocumenterServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -17,6 +17,12 @@ class DocumentorServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadViewsFrom(__DIR__.'/views', 'documenter');
+
+        $this->publishes([
+            __DIR__.'/config/documenter-laravel.php' => config_path('documenter-laravel.php'),
+            __DIR__.'/resources/assets/sass/_documenter.scss' => resource_path('assets/sass/vendor/8fold/documenter/_documenter.scss'),
+            __DIR__.'/documenterViews' => resource_path('views/documenter')
+        ]);
     }
 
     /**

@@ -10,4 +10,4 @@
         <!-- Fonts -->
         <link href="{{ url('/css/8fold.css') }}" rel="stylesheet" type="text/css">
     </head>
-    <body>
+    <body class="documenter-wrapper">

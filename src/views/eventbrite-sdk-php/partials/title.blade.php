@@ -1,1 +1,0 @@
-Eventbrite SDK for PHP
