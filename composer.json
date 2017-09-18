@@ -1,5 +1,5 @@
 {
-    "name": "8fold/documenter-laravel",
+    "name": "8fold/laravel-documenter",
     "description": "A Laravel service for dynamically generating API documentation of PHP projects.",
     "license": "MIT",
     "authors": [
